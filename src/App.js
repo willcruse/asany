@@ -21,8 +21,6 @@ const PAGES = {
   'lobby': 'lobby',
 }
 
-const Lobby = ({workoutID}) => (<h1>{"WORKOUT ID: " + workoutID}</h1>)
-
 function App() {
 
   const [previousPage, changePreviousPage] = useState(PAGES.workoutSelector);
