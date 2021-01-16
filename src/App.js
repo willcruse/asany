@@ -16,9 +16,11 @@ import "./app.css";
 const PAGES = {
   'settings': 'settings',
   'cameraStream': 'cameraStream',
-  'workoutSelector': 'workoutSelector'
+  'workoutSelector': 'workoutSelector',
+  'lobby': 'lobby',
 }
 
+const Lobby = ({workoutID}) => (<h1>{"WORKOUT ID: " + workoutID}</h1>)
 
 function App() {
 
@@ -30,6 +32,8 @@ function App() {
   const [quantBytes, changeQuantBytes] = useState(4);
   const [showVideoCanvas, changeShowVideoCanvas] = useState(false);
 
+  const [workoutID, changeWorkoutID] = useState(0);
+
   const navigateAway = (nextPage) => {
     changePreviousPage(currentPage);
     setCurrentPage(nextPage);
@@ -39,6 +43,10 @@ function App() {
     navigateAway(previousPage);
   }
 
+  const goToLobby = (workoutID) => {
+    changeWorkoutID(workoutID);
+    navigateAway(PAGES.lobby);
+  }
   return (
     <div className="page">
       <Header></Header>
@@ -52,13 +60,14 @@ function App() {
                 <option value={PAGES.workoutSelector}>{PAGES.workoutSelector}</option>
                 <option value={PAGES.settings}>{PAGES.settings}</option>
                 <option value={PAGES.cameraStream}>{PAGES.cameraStream}</option>
+                <option value={PAGES.lobby}>{PAGES.lobby}</option>
               </FormSelect>
             </FormGroup>
           </Form>
         </Col>
         </Row>
         {
-          currentPage == PAGES.workoutSelector ? <Row><WorkoutSelector /></Row> : <></>
+          currentPage == PAGES.workoutSelector ? <Row><WorkoutSelector settings={() => navigateAway(PAGES.settings)} goToLobby={goToLobby}/></Row> : <></>
         }
       {currentPage == PAGES.settings ? <Row>
         <Settings
@@ -81,6 +90,9 @@ function App() {
           showVideoCanvas={showVideoCanvas}
         />
       </Row> : <></>}
+      {
+        currentPage == PAGES.lobby ? <Row><Lobby workoutID={workoutID}/></Row> : <></>
+      }
     </div>
   );
 

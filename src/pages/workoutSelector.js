@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import {
     Fade,
     Card,
-    CardHeader,
     CardTitle,
     CardImg,
     CardBody,
-    CardFooter,
     Button,
     Container,
     Row,
@@ -16,23 +14,22 @@ import workouts from "../workouts"
 
 class workoutSelector extends React.Component {
 
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
+        this.settings = props.settings;
+        this.goToLobby = props.goToLobby;
         this.state = []
         this.useAddFadeIn = this.useAddFadeIn.bind(this)
     }
 
     componentDidMount() {
         var tempFadeIns = workouts.map(() => false);
-        console.log(tempFadeIns)
         this.setState(tempFadeIns);
         setTimeout(this.useAddFadeIn, 700);
     }
 
     useAddFadeIn() {
-        console.log(this.state);
         for (const [key, value] of Object.entries(this.state)) {
-            console.log(key);
             if(!this.state[key]) {
                 var temp = this.state
                 temp[key] = true
@@ -45,15 +42,15 @@ class workoutSelector extends React.Component {
 
     render() {
 
-        const workoutCards = workouts.map((workout, index) => 
-            <Col sm="6" lg="4">
+        const workoutCards = workouts.map((workout, index) =>
+            <Col key={index} sm="6" lg="4">
                 <Fade in={this.state[index]}>
                     <Card style={{ maxWidth: "300px", marginRight: "20px", marginLeft: "20px", marginBottom: "40px" }}>
                         <CardImg top src={workout.imageURL} style={{maxHeight: "200px"}} />
                         <CardBody>
                             <CardTitle>{workout.name}</CardTitle>
                             <p>{workout.description}</p>
-                            <Button>View &rarr;</Button>
+                            <Button onClick={() => {this.goToLobby(index)}}>View &rarr;</Button>
                         </CardBody>
                     </Card>
                 </Fade>
@@ -65,6 +62,9 @@ class workoutSelector extends React.Component {
                 <Row>
                     {workoutCards}
                 </Row>
+                <Row>
+                <Col><Button onClick={this.settings}>Settings</Button></Col>
+                </Row>
             </Container>
         )
     }
@@ -72,4 +72,3 @@ class workoutSelector extends React.Component {
   }
 
   export default workoutSelector;
-  
