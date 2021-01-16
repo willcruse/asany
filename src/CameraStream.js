@@ -69,11 +69,10 @@ function CameraStream(props) {
   useEffect(() => {
     async function posenetLoader() {
       try {
-        // BUG: Not using props
         let posenet_model = await posenet.load({
           architecture: modelName,
-          outputStride: 32,
-          quantBytes: 2
+          outputStride: props.outputStride,
+          quantBytes: props.quantBytes
 
         });
         updateModel(posenet_model);
@@ -88,7 +87,7 @@ function CameraStream(props) {
       }
     }
     posenetLoader(); // Loads PoseNet model whenever modelName changes
-  }, [modelName]);
+  }, [modelName, props.outputStride, props.quantBytes]);
 
   useEffect(() => {
     return () => {
@@ -108,8 +107,6 @@ function CameraStream(props) {
         const {
           minPoseConfidence,
           minPartConfidence,
-          videoWidth,
-          videoHeight,
           showVideo,
           showPoints,
           calcDifference,
@@ -119,14 +116,13 @@ function CameraStream(props) {
         } = props;
         const poses = [];
         try {
-          // BUG: Use props
           const pose = await model.estimateSinglePose(videoComponent.current, {
             video: true,
-            flipHorizontal: true
+            flipHorizontal: props.flipHorizontal
           });
           poses.push(pose);
       } catch (error) {
-        // This isn't ideal, we only want to skip the error if the video element hasn't loaded
+        // HACK: This isn't ideal, we only want to skip the error if the video element hasn't loaded
         console.log(error)
         return
       }
@@ -187,7 +183,7 @@ function CameraStream(props) {
 CameraStream.defaultProps = {
     videoWidth: 1280,
     videoHeight: 780,
-    flipHorizontal: false,
+    flipHorizontal: true,
     modelName: 'ResNet50',
     algorithm: 'single-pose',
     showVideo: true,
@@ -199,6 +195,7 @@ CameraStream.defaultProps = {
     maxPoseDetections: 2,
     nmsRadius: 20,
     outputStride: 32,
+    quantBytes: 2,
     imageScaleFactor: 0.45,
     skeletonColor: '#ffadea',
     skeletonLineWidth: 6,
