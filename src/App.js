@@ -19,12 +19,14 @@ const PAGES = {
   'workoutSelector': 'workoutSelector'
 }
 
+
 function App() {
 
   const [currentPage, setCurrentPage] = useState(PAGES.workoutSelector);
   const [model, changeModel] = useState('ResNet50');
   const [outputStride, changeOutputStride] = useState(16);
   const [quantBytes, changeQuantBytes] = useState(4);
+  const [showVideoCanvas, changeShowVideoCanvas] = useState(false);
 
   return (
     <div className="page">
@@ -52,13 +54,20 @@ function App() {
           changeModel={changeModel}
           changeOutputStride={changeOutputStride}
           changeQuantBytes={changeQuantBytes}
+          changeShowVideoCanvas={changeShowVideoCanvas}
           initialModel={model}
           initialOutputStride={outputStride}
           initialQuantBytes={quantBytes}
+          initialShowVideoCanvas={showVideoCanvas}
         />
       </Row> : <></>}
       {currentPage == PAGES.cameraStream ? <Row>
-        <CameraStream modelName={model} outputStride={outputStride} quantBytes={quantBytes}/>
+        <CameraStream
+          modelName={model}
+          outputStride={outputStride}
+          quantBytes={quantBytes}
+          showVideoCanvas={showVideoCanvas}
+        />
       </Row> : <></>}
     </div>
   );
