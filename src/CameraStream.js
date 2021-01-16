@@ -12,7 +12,8 @@ import {
 
 import * as posenet from '@tensorflow-models/posenet';
 import '@tensorflow/tfjs-backend-webgl';
-import {poseNormalise, poseDifference, poseScore} from './utils/poseDifference.js';
+import {getPoseScore} from './utils/poseDifference.js';
+import tpose from './referencePoses/tpose.js';
 
 function CameraStream(props) {
 
@@ -33,7 +34,6 @@ function CameraStream(props) {
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
           throw new Error('Browser API navigator.mediaDevices.getUserMedia not available');
         }
-        console.log(videoComponent.current)
         const video = videoComponent.current;
         video.width = videoWidth;
         video.height = videoHeight;
@@ -69,9 +69,10 @@ function CameraStream(props) {
   useEffect(() => {
     async function posenetLoader() {
       try {
+        // BUG: Not using props
         let posenet_model = await posenet.load({
           architecture: modelName,
-          outputStride: 16,
+          outputStride: 32,
           quantBytes: 2
 
         });
@@ -118,6 +119,7 @@ function CameraStream(props) {
         } = props;
         const poses = [];
         try {
+          // BUG: Use props
           const pose = await model.estimateSinglePose(videoComponent.current, {
             video: true,
             flipHorizontal: true
@@ -159,17 +161,13 @@ function CameraStream(props) {
               );
             }
             if (calcDifference) {
-              const normalised = poseNormalise(keypoints);
-              // TODO Get reference data
-              const reference = []
-              const differences = poseDifference(reference, normalised);
-              const score = poseScore(differences);
+              const score = getPoseScore(tpose, keypoints);
             }
           }
         })
       }
     }
-    interval = setInterval(getPoseFrame, 1000/30);
+    interval = setInterval(getPoseFrame, 1000);
   }
 
   getPose();
@@ -189,8 +187,8 @@ function CameraStream(props) {
 CameraStream.defaultProps = {
     videoWidth: 1280,
     videoHeight: 780,
-    flipHorizontal: true,
-    modelName: 'MobileNetV1',
+    flipHorizontal: false,
+    modelName: 'ResNet50',
     algorithm: 'single-pose',
     showVideo: true,
     showSkeleton: true,
