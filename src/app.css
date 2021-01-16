@@ -1,24 +1,16 @@
-@keyframes skew {
-    0% {transform: scaleY(1);}
-    25% {transform: scaleY(1.008);}
-    50% {transform: scaleY(1);}
-    75% {transform: scaleY(1.008);}
-    100% {transform: scaleY(1);}
+@keyframes fadeIn {
+    0%{opacity: 0;}
+    100%{opacity: 1;}
+}
+
+.page {
+    background-color: rgb(250, 250, 250);
 }
 
 .header {
     color: black;
-    height: 200px;
-}
-
-.header svg {
-    display: inline-block;
-    position: absolute;
-    left: 0;
-    fill: rgb(173, 231, 255);
-    animation-name: skew;
-    animation-duration: 6s;
-    animation-iteration-count: infinite;
+    height: 300px;
+    margin-bottom: 40px;
 }
 
 .header h1 {
@@ -26,25 +18,22 @@
     top: 60px;
     left: 50px;
     font-size: 130px;
+    animation-fill-mode: backwards;
+    animation-delay: 0.5s;
+    animation-name: fadeIn;
+    animation-duration: 1s;
+    animation-iteration-count: 1;
 }
 
-.header .account {
+.background {
     position: absolute;
-    top: 70px;
-    right: 40px;
-}
-
-.header .account .user-image {
-    display: inline-block;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background-color: teal;
-}
-
-.header .account .username {
-    display: inline-block;
-    vertical-align: top;
-    margin-top: 12px;
-    margin-left: 15px;
+    width: 100%;
+    height: 550px;
+    background-image: url("https://miro.medium.com/max/11630/0*C5Y8W-6e9OVIB3AM");
+    background-position: bottom;
+    background-size: cover;
+    clip-path: polygon(0 0, 100% 0%, 100% 38%, 0 80%);
+    animation-name: fadeIn;
+    animation-duration: 2s;
+    animation-iteration-count: 1;
 }

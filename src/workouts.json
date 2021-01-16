@@ -1,0 +1,26 @@
+[
+    {
+        "name" : "For beginners",
+        "description": "Designed for first timers",
+        "imageURL" : "https://www.goodnet.org/photos/620x0/30219_hd.jpg",
+        "poseIds": [1, 2, 3, 4]
+    },
+    {
+        "name" : "Morning Yoga",
+        "description": "Have a gentle wake up",
+        "imageURL" : "https://mk0healthista7wl964d.kinstacdn.com/wp-content/uploads/2019/07/yoga-challenge-day-one-energising-morning-flow.jpg",
+        "poseIds": [1, 2, 3, 4]
+    },
+    {
+        "name" : "Total body",
+        "description": "Stretch and strengthen every part of your body",
+        "imageURL" : "https://blog.fitbit.com/wp-content/uploads/2020/04/0411_InbedYoga_Blog.jpg",
+        "poseIds": [1, 2, 3, 4]
+    },
+    {
+        "name" : "Ease into it",
+        "description": "A more chilled out session",
+        "imageURL" : "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/afro-american-couple-doing-yoga-royalty-free-image-598708752-1548713240.jpg",
+        "poseIds": [1, 2, 3, 4]
+    }
+]
