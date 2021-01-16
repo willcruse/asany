@@ -26,11 +26,9 @@ function App() {
       <Header></Header>
       <Container fluid style={{margin: '1rem'}}>
         <Row> {/* Must have a Row before we can use a column */}
-          <Col>
-            <Row><PoseSelector poses={poses} /></Row>
-            <Row><Participants /></Row>
-          </Col>
-          <Col><CameraStream /></Col>
+          {/* <Col><PoseSelector poses={poses} /></Col>
+          <Col><Participants /></Col>
+          <Col><CameraStream /></Col> */}
         </Row>
       </Container>
     </div>

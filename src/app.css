@@ -1,23 +1,50 @@
-.header {
-    color: white;
-    height: 200px;
-    position: relative;
+@keyframes skew {
+    0% {transform: scaleY(1);}
+    25% {transform: scaleY(1.008);}
+    50% {transform: scaleY(1);}
+    75% {transform: scaleY(1.008);}
+    100% {transform: scaleY(1);}
 }
 
-.header .bubble {
+.header {
+    color: black;
+    height: 200px;
+}
+
+.header svg {
+    display: inline-block;
     position: absolute;
-    background-color: blue;
-    height: 250px;
-    width: 450px;
-    border-radius: 50%;
-    margin-top: -100px;
-    margin-left: -80px;
+    left: 0;
+    fill: rgb(173, 231, 255);
+    animation-name: skew;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
 }
 
 .header h1 {
     position: absolute;
-    top: 30px;
-    left: 30px;
-    font-size: 60px;
-    color: white;
+    top: 90px;
+    left: 50px;
+    font-size: 130px;
+}
+
+.header .account {
+    position: absolute;
+    top: 75px;
+    right: 40px;
+}
+
+.header .account .user-image {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: teal;
+}
+
+.header .account .username {
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 12px;
+    margin-left: 15px;
 }
