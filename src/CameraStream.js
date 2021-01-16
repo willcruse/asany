@@ -13,7 +13,7 @@ import {
 import * as posenet from '@tensorflow-models/posenet';
 import '@tensorflow/tfjs-backend-webgl';
 import {getPoseScore} from './utils/poseDifference.js';
-import tpose from './referencePoses/tpose.js';
+import referencePoses from './referencePoses.js';
 
 function CameraStream(props) {
 
@@ -153,7 +153,7 @@ function CameraStream(props) {
               );
             }
             if (calcDifference) {
-              const score = getPoseScore(tpose, keypoints);
+              // const score = getPoseScore(tpose, keypoints);
             }
           }
         })

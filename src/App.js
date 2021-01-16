@@ -10,6 +10,7 @@ import {
 import Header from "./Header.js";
 import Settings from "./pages/settings.js";
 import CameraStream from "./CameraStream.js";
+import Lobby from "./pages/lobby.js"
 import WorkoutSelector from "./pages/workoutSelector.js"
 import "./app.css";
 
@@ -56,6 +57,7 @@ function App() {
           <Form>
             <FormGroup>
               <label htmlFor="#app-page">DEGUB BAR</label>
+              
               <FormSelect value={currentPage} onChange={(event) => {navigateAway(event.target.value)}}>
                 <option value={PAGES.workoutSelector}>{PAGES.workoutSelector}</option>
                 <option value={PAGES.settings}>{PAGES.settings}</option>
@@ -81,8 +83,16 @@ function App() {
           initialShowVideoCanvas={showVideoCanvas}
           goBack={goBack}
         />
-      </Row> : <></>}
-      {currentPage == PAGES.cameraStream ? <Row>
+      </Row> : <></>
+      }
+      {
+        currentPage == PAGES.lobby ? <Row>
+          <Lobby></Lobby>
+          </Row>
+          : <></>
+      }
+      {
+        currentPage == PAGES.cameraStream ? <Row>
         <CameraStream
           modelName={model}
           outputStride={outputStride}
