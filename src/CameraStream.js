@@ -63,20 +63,6 @@ function CameraStream(props) {
   }
 }, [videoComponent, videoWidth, videoHeight])
 
-useEffect(() => { // Called when canvasComponent is changed
-  if (canvasComponent.current != null) {
-    async function canvasLoader() {
-      try {
-
-      } catch (error) {
-        throw error
-      }
-
-  }
-  canvasLoader()
-}
-}, [videoComponent, videoWidth, videoHeight])
-
   useEffect(() => {
     async function posenetLoader() {
       try {
@@ -102,11 +88,10 @@ useEffect(() => { // Called when canvasComponent is changed
 
   const getPose = () => {
     const getPoseFrame = async () => {
-      if (videoComponent != null &&
+      if (videoComponent.current != null &&
           canvasComponent.current != null &&
           model != null &&
           ready) {
-
         const canvasContext = canvasComponent.current.getContext('2d');
         const {
           minPoseConfidence,
@@ -120,14 +105,20 @@ useEffect(() => { // Called when canvasComponent is changed
           skeletonLineWidth
         } = props;
         const poses = [];
+        try {
         const pose = await model.estimateSinglePose(videoComponent.current, {
           video: true,
           flipHorizontal: true
         });
         poses.push(pose);
-
+      } catch (error) {
+        // This isn't ideal, we only want to skip the error if the video element hasn't loaded
+        console.log(error)
+        return
+      }
         canvasContext.clearRect(0, 0, videoWidth, videoHeight);
-
+        canvasContext.canvas.width = videoWidth;
+        canvasContext.canvas.height = videoHeight;
         if (showVideo) {
           canvasContext.save();
           canvasContext.scale(-1, 1);
@@ -135,6 +126,7 @@ useEffect(() => { // Called when canvasComponent is changed
           canvasContext.drawImage(videoComponent.current, 0, 0, videoComponent.current.width, videoComponent.current.height);
           canvasContext.restore();
         }
+
         poses.forEach(({score, keypoints}) => {
           if (score >= minPoseConfidence) {
             if (showPoints) {
@@ -158,7 +150,6 @@ useEffect(() => { // Called when canvasComponent is changed
         })
       }
     }
-
     setInterval(getPoseFrame, 1000/30)
   }
 
@@ -171,7 +162,7 @@ useEffect(() => { // Called when canvasComponent is changed
         ref={videoComponent}
         style={{display: 'none', width: '100%'}}
       />
-      <canvas ref={canvasComponent} style={{width: 1280, height: 720}}/>
+      <canvas ref={canvasComponent} style={{width: videoWidth, height: videoHeight}}/>
     </Container>
   );
 }
@@ -194,7 +185,7 @@ CameraStream.defaultProps = {
     skeletonColor: '#ffadea',
     skeletonLineWidth: 6,
     loadingText: 'Loading...please be patient...',
-  };
+};
 
 function toTuple({x, y}) {
   return [x, y]
@@ -210,7 +201,6 @@ function drawKeyPoints(
   ) {
     keypoints.forEach(keypoint => {
       if (keypoint.score >= minConfidence) {
-        console.log("drawKeyPoints");
         const {x, y} = keypoint.position
         canvasContext.beginPath()
         canvasContext.arc(x * scale, y * scale, pointRadius, 0, 2 * Math.PI)
