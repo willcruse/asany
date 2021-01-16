@@ -22,11 +22,22 @@ const PAGES = {
 
 function App() {
 
+  const [previousPage, changePreviousPage] = useState(PAGES.workoutSelector);
   const [currentPage, setCurrentPage] = useState(PAGES.workoutSelector);
+
   const [model, changeModel] = useState('ResNet50');
   const [outputStride, changeOutputStride] = useState(16);
   const [quantBytes, changeQuantBytes] = useState(4);
   const [showVideoCanvas, changeShowVideoCanvas] = useState(false);
+
+  const navigateAway = (nextPage) => {
+    changePreviousPage(currentPage);
+    setCurrentPage(nextPage);
+  }
+
+  const goBack = () => {
+    navigateAway(previousPage);
+  }
 
   return (
     <div className="page">
@@ -37,8 +48,8 @@ function App() {
           <Form>
             <FormGroup>
               <label htmlFor="#app-page">DEGUB BAR</label>
-              <FormSelect onChange={(event) => {setCurrentPage(event.target.value)}}>
-              <option value={PAGES.workoutSelector}>{PAGES.workoutSelector}</option>
+              <FormSelect value={currentPage} onChange={(event) => {navigateAway(event.target.value)}}>
+                <option value={PAGES.workoutSelector}>{PAGES.workoutSelector}</option>
                 <option value={PAGES.settings}>{PAGES.settings}</option>
                 <option value={PAGES.cameraStream}>{PAGES.cameraStream}</option>
               </FormSelect>
@@ -59,6 +70,7 @@ function App() {
           initialOutputStride={outputStride}
           initialQuantBytes={quantBytes}
           initialShowVideoCanvas={showVideoCanvas}
+          goBack={goBack}
         />
       </Row> : <></>}
       {currentPage == PAGES.cameraStream ? <Row>

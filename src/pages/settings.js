@@ -37,6 +37,7 @@ function Settings(props) {
 
     return(
       <Container>
+        <Row><Col><Button onClick={props.goBack}>Back</Button></Col></Row>
         <Row><ModelSettings
           changeTempModel={changeTempModel}
           changeTempOutputStride={changeTempOutputStride}
@@ -126,7 +127,8 @@ Settings.defaultProps = {
   'changeQuantBytes': notImplementedFunc,
   'initialQuantBytes': 4,
   'changeShowVideoCanvas': notImplementedFunc,
-  'initialShowVideoCanvas': false
+  'initialShowVideoCanvas': false,
+  'goBack': notImplementedFunc,
 }
 
 export default Settings;
