@@ -10,6 +10,8 @@ import {
 import CameraStream from "./CameraStream.js";
 import PoseSelector from "./PoseSelector.js";
 import Participants from "./Participants.js";
+import Header from "./Header.js";
+import "./app.css";
 
 function App() {
 
@@ -21,9 +23,7 @@ function App() {
 
   return (
     <div>
-      <Navbar type="dark" theme="primary" style={{marginBottom: '1rem'}}>
-        <NavbarBrand>Asany</NavbarBrand>
-      </Navbar>
+      <Header></Header>
       <Container fluid style={{margin: '1rem'}}>
         <Row> {/* Must have a Row before we can use a column */}
           <Col>
