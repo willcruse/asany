@@ -167,7 +167,7 @@ function CameraStream(props) {
         })
       }
     }
-    interval = setInterval(getPoseFrame, 1000);
+    interval = setInterval(getPoseFrame, 1000/props.fps);
   }
 
   getPose();
@@ -203,6 +203,7 @@ CameraStream.defaultProps = {
     skeletonColor: '#ffadea',
     skeletonLineWidth: 6,
     loadingText: 'Loading...please be patient...',
+    fps: 1
 };
 
 function toTuple({x, y}) {
