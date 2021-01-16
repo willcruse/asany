@@ -1,0 +1,26 @@
+[
+    {
+        "name" : "workout 1",
+        "description": "this is a test workout",
+        "imageURL" : "https://www.goodnet.org/photos/620x0/30219_hd.jpg",
+        "poseIds": [1, 2, 3, 4]
+    },
+    {
+        "name" : "workout 2",
+        "description": "this is another test workout",
+        "imageURL" : "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/afro-american-couple-doing-yoga-royalty-free-image-598708752-1548713240.jpg",
+        "poseIds": [1, 2, 3, 4]
+    },
+    {
+        "name" : "workout 3",
+        "description": "this is another test workout",
+        "imageURL" : "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/afro-american-couple-doing-yoga-royalty-free-image-598708752-1548713240.jpg",
+        "poseIds": [1, 2, 3, 4]
+    },
+    {
+        "name" : "workout 4",
+        "description": "this is another test workout",
+        "imageURL" : "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/afro-american-couple-doing-yoga-royalty-free-image-598708752-1548713240.jpg",
+        "poseIds": [1, 2, 3, 4]
+    }
+]
