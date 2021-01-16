@@ -49,11 +49,11 @@ class workoutSelector extends React.Component {
             <Col sm="6" lg="4">
                 <Fade in={this.state[index]}>
                     <Card style={{ maxWidth: "300px", marginRight: "20px", marginLeft: "20px", marginBottom: "40px" }}>
-                        <CardImg top src={workout.imageURL} />
+                        <CardImg top src={workout.imageURL} style={{maxHeight: "200px"}} />
                         <CardBody>
                             <CardTitle>{workout.name}</CardTitle>
                             <p>{workout.description}</p>
-                            <Button>Start &rarr;</Button>
+                            <Button>View &rarr;</Button>
                         </CardBody>
                     </Card>
                 </Fade>

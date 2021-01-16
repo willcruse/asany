@@ -8,7 +8,7 @@ function App() {
   return (
     <div className="page">
       <Header></Header>
-      <WorkoutSelector></WorkoutSelector>
+
     </div>
   );
 

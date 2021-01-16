@@ -14,6 +14,10 @@
 }
 
 .header h1 {
+    position: absolute;
+    top: 60px;
+    left: 50px;
+    font-size: 130px;
     animation-fill-mode: backwards;
     animation-delay: 0.5s;
     animation-name: fadeIn;
@@ -25,30 +29,11 @@
     position: absolute;
     width: 100%;
     height: 550px;
-    /* background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url("https://miro.medium.com/max/11630/0*C5Y8W-6e9OVIB3AM"); */
     background-image: url("https://miro.medium.com/max/11630/0*C5Y8W-6e9OVIB3AM");
     background-position: bottom;
     background-size: cover;
-    /*background-color: rgba(171, 244, 255, 0.8);*/
     clip-path: polygon(0 0, 100% 0%, 100% 38%, 0 80%);
     animation-name: fadeIn;
     animation-duration: 2s;
     animation-iteration-count: 1;
-}
-
-.header svg {
-    position: absolute;
-    left: 0;
-    top: -20px;
-    fill: rgb(173, 231, 255);
-    animation-name: skew;
-    animation-duration: 6s;
-    animation-iteration-count: infinite;
-}
-
-.header h1 {
-    position: absolute;
-    top: 60px;
-    left: 50px;
-    font-size: 130px;
 }
