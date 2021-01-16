@@ -40,7 +40,7 @@ function Settings({changeModel, changeOutputStride, changeQuantBytes, initialMod
             <Form>
               <FormGroup>
                 <label htmlFor="#settings-model">Model</label>
-                <FormSelect onChange={(event) => {changeTempModel(event.target.value)}}>
+                <FormSelect value={tempModel} onChange={(event) => {changeTempModel(event.target.value)}}>
                   <option value={RES_NET}>{RES_NET}</option>
                   <option value={MOBILE_NET}>{MOBILE_NET}</option>
                 </FormSelect>
@@ -52,7 +52,7 @@ function Settings({changeModel, changeOutputStride, changeQuantBytes, initialMod
             <Form>
               <FormGroup>
                 <label htmlFor="#settings-output-stride">Output Stride</label>
-                <FormSelect onChange={(event) => {changeTempOutputStride(event.target.value)}}>
+                <FormSelect value={tempOutputStride} onChange={(event) => {changeTempOutputStride(event.target.value)}}>
                   {OUTPUT_STRIDES[tempModel].map(val => <option value={val} key={val}>{val}</option>)}
                 </FormSelect>
               </FormGroup>
@@ -63,7 +63,7 @@ function Settings({changeModel, changeOutputStride, changeQuantBytes, initialMod
             <Form>
               <FormGroup>
                 <label htmlFor="#settings-quant-bytes">Quant Bytes</label>
-                <FormSelect onChange={(event) => {changeTempQuantBytes(event.target.value)}}>
+                <FormSelect value={tempQuantBytes} onChange={(event) => {changeTempQuantBytes(event.target.value)}}>
                   {QUANT_BYTES.map(val => <option value={val} key={val}>{val}</option>)}
                 </FormSelect>
               </FormGroup>
