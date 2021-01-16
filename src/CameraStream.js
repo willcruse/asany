@@ -12,6 +12,8 @@ import {
 
 import * as posenet from '@tensorflow-models/posenet';
 import '@tensorflow/tfjs-backend-webgl';
+import {getPoseScore} from './utils/poseDifference.js';
+import tpose from './referencePoses/tpose.js';
 
 function CameraStream(props) {
 
@@ -32,7 +34,6 @@ function CameraStream(props) {
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
           throw new Error('Browser API navigator.mediaDevices.getUserMedia not available');
         }
-        console.log(videoComponent.current)
         const video = videoComponent.current;
         video.width = videoWidth;
         video.height = videoHeight;
@@ -70,8 +71,8 @@ function CameraStream(props) {
       try {
         let posenet_model = await posenet.load({
           architecture: modelName,
-          outputStride: 16,
-          quantBytes: 2
+          outputStride: props.outputStride,
+          quantBytes: props.quantBytes
 
         });
         updateModel(posenet_model);
@@ -86,7 +87,7 @@ function CameraStream(props) {
       }
     }
     posenetLoader(); // Loads PoseNet model whenever modelName changes
-  }, [modelName]);
+  }, [modelName, props.outputStride, props.quantBytes]);
 
   useEffect(() => {
     return () => {
@@ -106,23 +107,22 @@ function CameraStream(props) {
         const {
           minPoseConfidence,
           minPartConfidence,
-          videoWidth,
-          videoHeight,
           showVideo,
           showPoints,
+          calcDifference,
           showSkeleton,
           skeletonColor,
           skeletonLineWidth
         } = props;
         const poses = [];
         try {
-        const pose = await model.estimateSinglePose(videoComponent.current, {
-          video: true,
-          flipHorizontal: true
-        });
-        poses.push(pose);
+          const pose = await model.estimateSinglePose(videoComponent.current, {
+            video: true,
+            flipHorizontal: props.flipHorizontal
+          });
+          poses.push(pose);
       } catch (error) {
-        // This isn't ideal, we only want to skip the error if the video element hasn't loaded
+        // HACK: This isn't ideal, we only want to skip the error if the video element hasn't loaded
         console.log(error)
         return
       }
@@ -156,11 +156,14 @@ function CameraStream(props) {
                 canvasContext
               );
             }
+            if (calcDifference) {
+              const score = getPoseScore(tpose, keypoints);
+            }
           }
         })
       }
     }
-    interval = setInterval(getPoseFrame, 1000/30);
+    interval = setInterval(getPoseFrame, 1000/props.fps);
   }
 
   getPose();
@@ -181,20 +184,23 @@ CameraStream.defaultProps = {
     videoWidth: 1280,
     videoHeight: 780,
     flipHorizontal: true,
-    modelName: 'MobileNetV1',
+    modelName: 'ResNet50',
     algorithm: 'single-pose',
     showVideo: true,
     showSkeleton: true,
     showPoints: true,
+    calcDifference: true,
     minPoseConfidence: 0.1,
     minPartConfidence: 0.5,
     maxPoseDetections: 2,
     nmsRadius: 20,
     outputStride: 32,
+    quantBytes: 2,
     imageScaleFactor: 0.45,
     skeletonColor: '#ffadea',
     skeletonLineWidth: 6,
     loadingText: 'Loading...please be patient...',
+    fps: 1
 };
 
 function toTuple({x, y}) {
