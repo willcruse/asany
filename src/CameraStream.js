@@ -107,7 +107,7 @@ function CameraStream(props) {
         const {
           minPoseConfidence,
           minPartConfidence,
-          showVideo,
+          showVideoCanvas,
           showPoints,
           calcDifference,
           showSkeleton,
@@ -121,15 +121,11 @@ function CameraStream(props) {
             flipHorizontal: props.flipHorizontal
           });
           poses.push(pose);
-      } catch (error) {
-        // HACK: This isn't ideal, we only want to skip the error if the video element hasn't loaded
-        console.log(error)
-        return
-      }
+
         canvasContext.clearRect(0, 0, videoWidth, videoHeight);
         canvasContext.canvas.width = videoWidth;
         canvasContext.canvas.height = videoHeight;
-        if (showVideo) {
+        if (showVideoCanvas) {
           canvasContext.save();
           canvasContext.scale(-1, 1);
           canvasContext.translate(-videoWidth, 0);
@@ -139,7 +135,7 @@ function CameraStream(props) {
 
         poses.forEach(({score, keypoints}) => {
           if (score >= minPoseConfidence) {
-            if (showPoints) {
+            if (showVideoCanvas && showPoints) {
               drawKeyPoints(
                 keypoints,
                 minPartConfidence,
@@ -147,7 +143,7 @@ function CameraStream(props) {
                 canvasContext
               );
             }
-            if (showSkeleton) {
+            if (showVideoCanvas && showSkeleton) {
               drawSkeleton(
                 keypoints,
                 minPartConfidence,
@@ -161,7 +157,12 @@ function CameraStream(props) {
             }
           }
         })
+      } catch (error) {
+        // HACK: This isn't ideal, we only want to skip the error if the video element hasn't loaded
+        console.log(error)
+        return
       }
+    }
     }
     interval = setInterval(getPoseFrame, 1000/props.fps);
   }
@@ -173,9 +174,9 @@ function CameraStream(props) {
       <video
         playsInline
         ref={videoComponent}
-        style={{display: 'none', width: '100%'}}
+        style={props.showVideoCanvas ? {display: 'none', width: '100%'} : {transform: 'scaleX(-1)'}}
       />
-      <canvas ref={canvasComponent} style={{width: videoWidth, height: videoHeight}}/>
+      {props.showVideoCanvas ? <canvas ref={canvasComponent} style={{width: videoWidth, height: videoHeight}}/> : <></>}
     </Container>
   );
 }
@@ -186,7 +187,7 @@ CameraStream.defaultProps = {
     flipHorizontal: true,
     modelName: 'ResNet50',
     algorithm: 'single-pose',
-    showVideo: true,
+    showVideoCanvas: true,
     showSkeleton: true,
     showPoints: true,
     calcDifference: true,
