@@ -121,11 +121,7 @@ function CameraStream(props) {
             flipHorizontal: props.flipHorizontal
           });
           poses.push(pose);
-      } catch (error) {
-        // HACK: This isn't ideal, we only want to skip the error if the video element hasn't loaded
-        console.log(error)
-        return
-      }
+
         canvasContext.clearRect(0, 0, videoWidth, videoHeight);
         canvasContext.canvas.width = videoWidth;
         canvasContext.canvas.height = videoHeight;
@@ -161,7 +157,12 @@ function CameraStream(props) {
             }
           }
         })
+      } catch (error) {
+        // HACK: This isn't ideal, we only want to skip the error if the video element hasn't loaded
+        console.log(error)
+        return
       }
+    }
     }
     interval = setInterval(getPoseFrame, 1000/props.fps);
   }
