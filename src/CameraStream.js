@@ -23,6 +23,8 @@ function CameraStream(props) {
   const [model, updateModel] = useState(null);
   const [ready, setReady] = useState(false);
 
+  let interval = null;
+
   useEffect(() => { // Called when videoComponent is changed
     if (videoComponent.current != null) {
       async function videoLoader() {
@@ -85,6 +87,14 @@ function CameraStream(props) {
     }
     posenetLoader(); // Loads PoseNet model whenever modelName changes
   }, [modelName]);
+
+  useEffect(() => {
+    return () => {
+      if (interval != null) {
+        clearInterval(interval);
+      }
+    }
+  }, []);
 
   const getPose = () => {
     const getPoseFrame = async () => {
@@ -150,7 +160,7 @@ function CameraStream(props) {
         })
       }
     }
-    setInterval(getPoseFrame, 1000/30)
+    interval = setInterval(getPoseFrame, 1000/30);
   }
 
   getPose();
