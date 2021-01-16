@@ -12,6 +12,7 @@ import {
 
 import * as posenet from '@tensorflow-models/posenet';
 import '@tensorflow/tfjs-backend-webgl';
+import {poseNormalise, poseDifference, poseScore} from './utils/poseDifference.js';
 
 function CameraStream(props) {
 
@@ -110,17 +111,18 @@ function CameraStream(props) {
           videoHeight,
           showVideo,
           showPoints,
+          calcDifference,
           showSkeleton,
           skeletonColor,
           skeletonLineWidth
         } = props;
         const poses = [];
         try {
-        const pose = await model.estimateSinglePose(videoComponent.current, {
-          video: true,
-          flipHorizontal: true
-        });
-        poses.push(pose);
+          const pose = await model.estimateSinglePose(videoComponent.current, {
+            video: true,
+            flipHorizontal: true
+          });
+          poses.push(pose);
       } catch (error) {
         // This isn't ideal, we only want to skip the error if the video element hasn't loaded
         console.log(error)
@@ -156,6 +158,13 @@ function CameraStream(props) {
                 canvasContext
               );
             }
+            if (calcDifference) {
+              const normalised = poseNormalise(keypoints);
+              // TODO Get reference data
+              const reference = []
+              const differences = poseDifference(reference, normalised);
+              const score = poseScore(differences);
+            }
           }
         })
       }
@@ -186,6 +195,7 @@ CameraStream.defaultProps = {
     showVideo: true,
     showSkeleton: true,
     showPoints: true,
+    calcDifference: true,
     minPoseConfidence: 0.1,
     minPartConfidence: 0.5,
     maxPoseDetections: 2,
