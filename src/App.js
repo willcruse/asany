@@ -30,7 +30,7 @@ function App() {
             <Row><PoseSelector poses={poses} /></Row>
             <Row><Participants /></Row>
           </Col>
-          <Col><CameraStream videoWidth={1280} videoHeight={720}/></Col>
+          <Col><CameraStream /></Col>
         </Row>
       </Container>
     </div>
