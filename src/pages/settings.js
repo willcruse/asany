@@ -25,6 +25,10 @@ function Settings({changeModel, changeOutputStride, changeQuantBytes, initialMod
     const [tempOutputStride, changeTempOutputStride] = useState(initialOutputStride);
     const [tempQuantBytes, changeTempQuantBytes] = useState(initialQuantBytes);
 
+    if (tempModel == RES_NET && tempOutputStride == 8) {
+      changeTempOutputStride(16);
+    }
+
     const saveSettings = () => {
       changeModel(tempModel);
       changeOutputStride(tempOutputStride);
