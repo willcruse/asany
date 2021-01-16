@@ -17,20 +17,20 @@
     left: 0;
     fill: rgb(173, 231, 255);
     animation-name: skew;
-    animation-duration: 4s;
+    animation-duration: 6s;
     animation-iteration-count: infinite;
 }
 
 .header h1 {
     position: absolute;
-    top: 90px;
+    top: 60px;
     left: 50px;
     font-size: 130px;
 }
 
 .header .account {
     position: absolute;
-    top: 75px;
+    top: 70px;
     right: 40px;
 }
 
