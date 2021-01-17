@@ -6,7 +6,7 @@ import {
 } from "shards-react";
 import { OTSession, OTPublisher, OTStreams, OTSubscriber } from 'opentok-react';
 
-const SERVER_ADDRESS = 'http://localhost:5000'
+const SERVER_ADDRESS = 'https://asany-htn.nw.r.appspot.com'
 
 function VideoStreamer(props){
 

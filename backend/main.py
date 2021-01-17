@@ -5,6 +5,8 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from opentok import OpenTok
 
+load_dotenv()
+
 VONAGE_API_KEY = os.getenv("VONAGE_API_KEY")
 VONAGE_API_SECRET = os.getenv("VONAGE_API_SECRET")
 
@@ -41,7 +43,4 @@ def get_token():
         return jsonify({'token': session.generate_token()})
     except Exception as e:
         print(e)
-        return jsonify({'error': 'unknown-error'})
-
-if __name__=='__main__':
-    load_dotenv()
+        return jsonify({'error': 'unknown-error'})    
