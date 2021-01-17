@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import {
   Row,
   Col,
@@ -6,11 +6,53 @@ import {
 } from "shards-react";
 import { OTSession, OTPublisher, OTStreams, OTSubscriber } from 'opentok-react';
 
-function VideoStreamer({ apiKey, sessionId, token }){
+const SERVER_ADDRESS = 'http://localhost:5000'
+
+function VideoStreamer(props){
 
   const [error, setError] = useState(null);
   const [connection, setConnection] = useState('Connecting');
   const [publishVideo, setPublishVideo] = useState(true);
+  const [sessionID, setSessionID] = useState(props?.sessionID);
+  const [token, setToken] = useState(props?.token);
+
+  useEffect(() => {
+    if (!sessionID) {
+      fetch(SERVER_ADDRESS + '/new-session').then((resp) => {
+        return resp.json()
+      }).then((json) => {
+        if (json?.error != undefined) {
+          throw Error(json.error)
+        } else if (json?.sessionID != null) {
+          setSessionID(json.sessionID)
+        }
+      }).catch((err) => {
+        console.warn(error)
+      });
+    }
+  }, [sessionID])
+
+  useEffect(() => {
+    if (sessionID && !token) {
+      fetch(SERVER_ADDRESS + '/get-token', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({'sessionID': sessionID})
+      }).then((resp) => {
+        return resp.json()
+      }).then((json) => {
+        if (json?.error != undefined) {
+          throw Error(json.error)
+        } else if (json?.token != null) {
+          setToken(json.token);
+        }
+      }).catch((err) => {
+        console.warn(error)
+      });
+    }
+  }, [sessionID, token])
 
   const sessionEventHandlers = {
     sessionConnected: () => {
@@ -80,39 +122,41 @@ function VideoStreamer({ apiKey, sessionId, token }){
             <strong>Error:</strong> {error}
           </div>
         ) : null}
-        <OTSession
-          apiKey={apiKey}
-          sessionId={sessionId}
-          token={token}
-          onError={onSessionError}
-          eventHandlers={sessionEventHandlers}
-        >
-          <button id="videoButton" onClick={toggleVideo}>
-              {publishVideo ? 'Disable' : 'Enable'} Video
-          </button>
-          <OTPublisher
-            properties={{ publishVideo, width: 50, height: 50, }}
-            onPublish={onPublish}
-            onError={onPublishError}
-            eventHandlers={publisherEventHandlers}
-          />
-          <OTStreams>
-            <OTSubscriber
-              properties={{ width: 100, height: 100 }}
-              onSubscribe={onSubscribe}
-              onError={onSubscribeError}
-              eventHandlers={subscriberEventHandlers}
+        {sessionID && token ?
+          <OTSession
+            apiKey={props.apiKey}
+            sessionId={sessionID}
+            token={token}
+            onError={onSessionError}
+            eventHandlers={sessionEventHandlers}
+          >
+            <button id="videoButton" onClick={toggleVideo}>
+                {publishVideo ? 'Disable' : 'Enable'} Video
+            </button>
+            <OTPublisher
+              properties={{ publishVideo, width: 50, height: 50, }}
+              onPublish={onPublish}
+              onError={onPublishError}
+              eventHandlers={publisherEventHandlers}
             />
-          </OTStreams>
-        </OTSession>
+            <OTStreams>
+              <OTSubscriber
+                properties={{ width: 100, height: 100 }}
+                onSubscribe={onSubscribe}
+                onError={onSubscribeError}
+                eventHandlers={subscriberEventHandlers}
+              />
+            </OTStreams>
+          </OTSession> :
+          <></> /* // TODO: Add Loading Screen */}
     </Container>
   )
 }
 
 VideoStreamer.defaultProps = {
   apiKey: '47084744',
-  sessionId: '1_MX40NzA4NDc0NH5-MTYxMDg0MzYyMDc1NH5CLzVtQ2MxcW0xUS9jODVyeDIydW5meml-UH4',
-  token: 'T1==cGFydG5lcl9pZD00NzA4NDc0NCZzaWc9MmQ3OTkyN2U2YTg1OTE3ZGYwODRiNTRkYTEyMTI4N2Y2MDkyNDYwZTpzZXNzaW9uX2lkPTFfTVg0ME56QTRORGMwTkg1LU1UWXhNRGcwTXpZeU1EYzFOSDVDTHpWdFEyTXhjVzB4VVM5ak9EVnllREl5ZFc1bWVtbC1VSDQmY3JlYXRlX3RpbWU9MTYxMDg0MzYyMCZleHBpcmVfdGltZT0xNjEwOTMwMDIwJnJvbGU9cHVibGlzaGVyJm5vbmNlPTE1MjgwOSZpbml0aWFsX2xheW91dF9jbGFzc19saXN0PQ=='
+  sessionID: false,
+  token: false
 }
 
 export default VideoStreamer;
