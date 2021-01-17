@@ -120,44 +120,44 @@ function CameraStream(props) {
           });
           poses.push(pose);
 
-        if(canvasComponent.current != null){
-          const canvasContext = canvasComponent.current.getContext('2d');
-          canvasContext.clearRect(0, 0, videoWidth, videoHeight);
-          canvasContext.canvas.width = videoWidth;
-          canvasContext.canvas.height = videoHeight;
-          if (showVideoCanvas) {
-            canvasContext.save();
-            canvasContext.scale(-1, 1);
-            canvasContext.translate(-videoWidth, 0);
-            canvasContext.drawImage(videoComponent.current, 0, 0, videoComponent.current.width, videoComponent.current.height);
-            canvasContext.restore();
-          }
+      //   if(canvasComponent.current != null){
+      //     const canvasContext = canvasComponent.current.getContext('2d');
+      //     canvasContext.clearRect(0, 0, videoWidth, videoHeight);
+      //     canvasContext.canvas.width = videoWidth;
+      //     canvasContext.canvas.height = videoHeight;
+      //     if (showVideoCanvas) {
+      //       canvasContext.save();
+      //       canvasContext.scale(-1, 1);
+      //       canvasContext.translate(-videoWidth, 0);
+      //       canvasContext.drawImage(videoComponent.current, 0, 0, videoComponent.current.width, videoComponent.current.height);
+      //       canvasContext.restore();
+      //     }
 
-          poses.forEach(({score, keypoints}) => {
-            if (score >= minPoseConfidence) {
-              if (showVideoCanvas && showPoints) {
-                drawKeyPoints(
-                  keypoints,
-                  minPartConfidence,
-                  skeletonColor,
-                  canvasContext
-                );
-              }
-              if (showVideoCanvas && showSkeleton) {
-                drawSkeleton(
-                  keypoints,
-                  minPartConfidence,
-                  skeletonColor,
-                  skeletonLineWidth,
-                  canvasContext
-                );
-              }
-              if (calcDifference) {
-                // const score = getPoseScore(tpose, keypoints);
-              }
-            }
-        })
-      }
+      //     poses.forEach(({score, keypoints}) => {
+      //       if (score >= minPoseConfidence) {
+      //         if (showVideoCanvas && showPoints) {
+      //           drawKeyPoints(
+      //             keypoints,
+      //             minPartConfidence,
+      //             skeletonColor,
+      //             canvasContext
+      //           );
+      //         }
+      //         if (showVideoCanvas && showSkeleton) {
+      //           drawSkeleton(
+      //             keypoints,
+      //             minPartConfidence,
+      //             skeletonColor,
+      //             skeletonLineWidth,
+      //             canvasContext
+      //           );
+      //         }
+      //         if (calcDifference) {
+      //           // const score = getPoseScore(tpose, keypoints);
+      //         }
+      //       }
+      //   })
+      // }
       } catch (error) {
         // HACK: This isn't ideal, we only want to skip the error if the video element hasn't loaded
         console.log(error)
@@ -171,11 +171,10 @@ function CameraStream(props) {
   getPose();
   return (
     <Container fluid>
-      <h1>Camera</h1>
       <video
         playsInline
         ref={videoComponent}
-        style={props.showVideoCanvas ? {display: 'none', width: '100%'} : {transform: 'scaleX(-1)'}}
+        style={props.showVideoCanvas ? {display: 'none', width: '100%'} : {transform: 'scaleX(-1)', width: '400px'}}
       />
       {props.showVideoCanvas ? <canvas ref={canvasComponent} style={{width: videoWidth, height: videoHeight}}/> : <></>}
     </Container>
@@ -188,7 +187,7 @@ CameraStream.defaultProps = {
     flipHorizontal: true,
     modelName: 'ResNet50',
     algorithm: 'single-pose',
-    showVideoCanvas: true,
+    showVideoCanvas: false,
     showSkeleton: true,
     showPoints: true,
     calcDifference: true,
@@ -202,7 +201,7 @@ CameraStream.defaultProps = {
     skeletonColor: '#ffadea',
     skeletonLineWidth: 6,
     loadingText: 'Loading...please be patient...',
-    fps: 10
+    fps: 1
 };
 
 function toTuple({x, y}) {

@@ -57,3 +57,24 @@
 .workoutScreen {
     text-align: center;
 }
+
+.custom-progress-container {
+    width: 100%;
+    height: 10px;
+    background-color: rgb(245, 245, 245);
+    position: relative;
+    display: absolute;
+    top: -20px;
+}
+.custom-progress-bar {
+    display: absolute;
+    background-color: rgb(46, 124, 246);
+    height: 100%;
+    left: 0;
+}
+
+.user-camera {
+    display: block;
+    margin: 0 auto;
+    width: 300px;
+}
