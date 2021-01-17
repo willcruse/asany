@@ -20,7 +20,11 @@ const clone = rfdc();
 class lobby extends React.Component {
 
 
-    // just takes int workoutID and goback callback has a prop
+
+    // props :
+    // - workoutID
+    // - goback
+    // - navigateAway
     constructor(props) {
         super(props)
         this.workoutID = props.workoutID;

@@ -12,6 +12,8 @@ import Settings from "./pages/settings.js";
 import CameraStream from "./CameraStream.js";
 import Lobby from "./pages/lobby.js"
 import WorkoutSelector from "./pages/workoutSelector.js"
+import VideoStreamer from "./VideoStreamer.js"
+import Workout from "./pages/workout.js"
 import "./app.css";
 
 const PAGES = {
@@ -19,6 +21,7 @@ const PAGES = {
   'cameraStream': 'cameraStream',
   'workoutSelector': 'workoutSelector',
   'lobby': 'lobby',
+  'workout': 'workout'
 }
 
 function App() {
@@ -98,6 +101,9 @@ function App() {
           showVideoCanvas={showVideoCanvas}
         />
         </Row> : <></>
+      }
+      {
+        currentPage == PAGES.workout ? <Row><Workout workoutID={workoutID}/></Row> : <></>
       }
     </div>
   );
