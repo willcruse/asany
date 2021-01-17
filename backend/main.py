@@ -17,21 +17,31 @@ sessions = {}
 
 @app.route("/new-session")
 def new_session():
-    session = opentok.create_session()
-    sessions[session.session_id] = session
-    return jsonify({'sessionID': session.session_id})
+    try:
+        session = opentok.create_session()
+        sessions[session.session_id] = session
+        print(sessions)
+        return jsonify({'sessionID': session.session_id})
+    except Exception as e:
+        print(e)
+        return jsonify({'error': 'unknown-error'})
 
 @app.route("/get-token", methods=["POST"])
 def get_token():
-    request_json = request.get_json()
-    if 'sessionID' not in request_json.keys():
-        return jsonify({'error': 'sessionID key is missing'})
+    try:
+        request_json = request.get_json()
+        if 'sessionID' not in request_json.keys():
+            return jsonify({'error': 'sessionID key is missing'})
 
-    session = sessions.get(request_json['sessionID'])
-    if session is None:
-        return jsonify({'error': 'invalid sessionID'})
+        session = sessions.get(request_json['sessionID'])
+        print(sessions)
+        if session is None:
+            return jsonify({'error': 'invalid sessionID'})
 
-    return jsonify({'token': session.generate_token()})
+        return jsonify({'token': session.generate_token()})
+    except Exception as e:
+        print(e)
+        return jsonify({'error': 'unknown-error'})
 
 if __name__=='__main__':
     load_dotenv()
