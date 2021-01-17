@@ -49,9 +49,9 @@ function App() {
   return (
     <div className="page">
       <Header></Header>
-      <Row>
-        <Col>
-          {/* HACK: Temp Page changer for debug */}
+      {/* HACK: Temp Page changer for debug */}
+      {/* <Row>
+        <Col> 
           <Form>
             <FormGroup>
               <label htmlFor="#app-page">DEGUB BAR</label>
@@ -65,7 +65,7 @@ function App() {
             </FormGroup>
           </Form>
         </Col>
-        </Row>
+        </Row> */}
         {
           currentPage == PAGES.workoutSelector ? <Row><WorkoutSelector settings={() => navigateAway(PAGES.settings)} goToLobby={goToLobby}/></Row> : <></>
         }
@@ -85,7 +85,7 @@ function App() {
       }
       {
         currentPage == PAGES.lobby ? <Row>
-          <Lobby></Lobby>
+          <Lobby workoutID={workoutID} goBack={goBack}></Lobby>
           </Row>
           : <></>
       }
@@ -97,9 +97,7 @@ function App() {
           quantBytes={quantBytes}
           showVideoCanvas={showVideoCanvas}
         />
-      </Row> : <></>}
-      {
-        currentPage == PAGES.lobby ? <Row><Lobby workoutID={workoutID}/></Row> : <></>
+        </Row> : <></>
       }
     </div>
   );

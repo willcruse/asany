@@ -100,10 +100,8 @@ function CameraStream(props) {
   const getPose = () => {
     const getPoseFrame = async () => {
       if (videoComponent.current != null &&
-          canvasComponent.current != null &&
           model != null &&
           ready) {
-        const canvasContext = canvasComponent.current.getContext('2d');
         const {
           minPoseConfidence,
           minPartConfidence,
@@ -122,41 +120,44 @@ function CameraStream(props) {
           });
           poses.push(pose);
 
-        canvasContext.clearRect(0, 0, videoWidth, videoHeight);
-        canvasContext.canvas.width = videoWidth;
-        canvasContext.canvas.height = videoHeight;
-        if (showVideoCanvas) {
-          canvasContext.save();
-          canvasContext.scale(-1, 1);
-          canvasContext.translate(-videoWidth, 0);
-          canvasContext.drawImage(videoComponent.current, 0, 0, videoComponent.current.width, videoComponent.current.height);
-          canvasContext.restore();
-        }
-
-        poses.forEach(({score, keypoints}) => {
-          if (score >= minPoseConfidence) {
-            if (showVideoCanvas && showPoints) {
-              drawKeyPoints(
-                keypoints,
-                minPartConfidence,
-                skeletonColor,
-                canvasContext
-              );
-            }
-            if (showVideoCanvas && showSkeleton) {
-              drawSkeleton(
-                keypoints,
-                minPartConfidence,
-                skeletonColor,
-                skeletonLineWidth,
-                canvasContext
-              );
-            }
-            if (calcDifference) {
-              // const score = getPoseScore(tpose, keypoints);
-            }
+        if(canvasComponent.current != null){
+          const canvasContext = canvasComponent.current.getContext('2d');
+          canvasContext.clearRect(0, 0, videoWidth, videoHeight);
+          canvasContext.canvas.width = videoWidth;
+          canvasContext.canvas.height = videoHeight;
+          if (showVideoCanvas) {
+            canvasContext.save();
+            canvasContext.scale(-1, 1);
+            canvasContext.translate(-videoWidth, 0);
+            canvasContext.drawImage(videoComponent.current, 0, 0, videoComponent.current.width, videoComponent.current.height);
+            canvasContext.restore();
           }
+
+          poses.forEach(({score, keypoints}) => {
+            if (score >= minPoseConfidence) {
+              if (showVideoCanvas && showPoints) {
+                drawKeyPoints(
+                  keypoints,
+                  minPartConfidence,
+                  skeletonColor,
+                  canvasContext
+                );
+              }
+              if (showVideoCanvas && showSkeleton) {
+                drawSkeleton(
+                  keypoints,
+                  minPartConfidence,
+                  skeletonColor,
+                  skeletonLineWidth,
+                  canvasContext
+                );
+              }
+              if (calcDifference) {
+                // const score = getPoseScore(tpose, keypoints);
+              }
+            }
         })
+      }
       } catch (error) {
         // HACK: This isn't ideal, we only want to skip the error if the video element hasn't loaded
         console.log(error)
@@ -201,7 +202,7 @@ CameraStream.defaultProps = {
     skeletonColor: '#ffadea',
     skeletonLineWidth: 6,
     loadingText: 'Loading...please be patient...',
-    fps: 1
+    fps: 10
 };
 
 function toTuple({x, y}) {

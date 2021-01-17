@@ -36,8 +36,8 @@ function Settings(props) {
   };
 
     return(
-      <Container>
-        <Row><Col><Button onClick={props.goBack}>Back</Button></Col></Row>
+      <Container style={{marginTop: "80px", marginBottom: "100px"}}>
+        <Row><Button onClick={props.goBack} style={{marginBottom: "20px"}}> &larr;Back</Button></Row>
         <Row><ModelSettings
           changeTempModel={changeTempModel}
           changeTempOutputStride={changeTempOutputStride}
@@ -50,7 +50,9 @@ function Settings(props) {
           tempShowVideoCanvas={tempShowVideoCanvas}
           changeTempShowVideoCanvas={changeTempShowVideoCanvas}
         /></Row>
-        <Row><Col><Button onClick={saveSettings}>Save</Button></Col></Row>
+        <Row>
+          <Col sm="2" lg="2"><Button onClick={saveSettings}>Save</Button></Col>
+        </Row>
       </Container>
     )
 }
@@ -110,10 +112,12 @@ function ModelSettings({changeTempModel, changeTempOutputStride, changeTempQuant
 function VideoCanvasSettings({tempShowVideoCanvas, changeTempShowVideoCanvas}) {
 
     return (
-      <FormCheckbox
-        checked={tempShowVideoCanvas}
-        onChange={e => changeTempShowVideoCanvas(!tempShowVideoCanvas)}
-      >Enable drawing mode</FormCheckbox>
+      <Container>
+        <FormCheckbox
+          checked={tempShowVideoCanvas}
+          onChange={e => changeTempShowVideoCanvas(!tempShowVideoCanvas)}
+        >Enable drawing mode</FormCheckbox>
+      </Container>
     )
 }
 

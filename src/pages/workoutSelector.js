@@ -49,7 +49,7 @@ class workoutSelector extends React.Component {
                         <CardImg top src={workout.imageURL} style={{maxHeight: "200px"}} />
                         <CardBody>
                             <CardTitle>{workout.name}</CardTitle>
-                            <p>{workout.description}</p>
+                            <p>{workout.shortDescription}</p>
                             <Button onClick={() => {this.goToLobby(index)}}>View &rarr;</Button>
                         </CardBody>
                     </Card>
@@ -58,12 +58,12 @@ class workoutSelector extends React.Component {
         )
 
         return (
-            <Container>
+            <Container style={{paddingBottom: "100px"}}>
                 <Row>
                     {workoutCards}
                 </Row>
                 <Row>
-                <Col><Button onClick={this.settings}>Settings</Button></Col>
+                <Col><Button style={{marginLeft: "20px"}} onClick={this.settings}>Settings</Button></Col>
                 </Row>
             </Container>
         )

@@ -1,26 +1,30 @@
 [
     {
         "name" : "For beginners",
-        "description": "Designed for first timers",
+        "shortDescription": "Designed for first timers",
+        "description": "Total yoga newbie? We have you covered with this workout designed specifically for first-timers.",
         "imageURL" : "https://www.goodnet.org/photos/620x0/30219_hd.jpg",
-        "poseIds": [1, 2, 3, 4]
+        "poseIds": [1, 2, 3, 4, 5]
     },
     {
         "name" : "Morning Yoga",
-        "description": "Have a gentle wake up",
+        "shortDescription": "Have a gentle wake up",
+        "description": "This morning yoga workout will wake you up by gently raising your heart rate while lengthening and strengthening your body from head to toe. Plus, it's quick enough to squeeze in before the day gets busy.",
         "imageURL" : "https://mk0healthista7wl964d.kinstacdn.com/wp-content/uploads/2019/07/yoga-challenge-day-one-energising-morning-flow.jpg",
-        "poseIds": [1, 2, 3, 4]
+        "poseIds": [3, 4, 2, 5, 7, 8]
     },
     {
-        "name" : "Total body",
-        "description": "Stretch and strengthen every part of your body",
+        "name" : "Yoga for stress",
+        "shortDescription": "Designed to help with stress and anxiety",
+        "description": "This yoga sequence will help you relax as you connect your breathe to asanas intended to help you cultivate calm.",
         "imageURL" : "https://blog.fitbit.com/wp-content/uploads/2020/04/0411_InbedYoga_Blog.jpg",
-        "poseIds": [1, 2, 3, 4]
+        "poseIds": [9, 4, 6, 5, 4, 1, 8, 1]
     },
     {
         "name" : "Ease into it",
-        "description": "A more chilled out session",
+        "shortDescription": "A more chilled out session",
+        "description": "If your workout mood is more 'balance' than 'burn,' this flow is for you.",
         "imageURL" : "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/afro-american-couple-doing-yoga-royalty-free-image-598708752-1548713240.jpg",
-        "poseIds": [1, 2, 3, 4]
+        "poseIds": [1, 2, 3, 4, 5, 6]
     }
 ]

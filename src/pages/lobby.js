@@ -14,24 +14,33 @@ import {
   } from "shards-react";
 import workouts from "../workouts"
 import referencePoses from "../referencePoses"
+import rfdc from 'rfdc';
+const clone = rfdc();
 
 class lobby extends React.Component {
 
-    poseIds = []
 
-    // just takes int workoutId has a prop
+    // just takes int workoutID and goback callback has a prop
     constructor(props) {
         super(props)
+        this.workoutID = props.workoutID;
+        this.workoutName = ""
+        this.goBack = props.goBack;
+        this.poseIds = []
+        this.state = {poses: []}
     }
     
     componentDidMount() {
-        this.poseIds = workouts.map((workout, index) => {
-            if(index == this.props.workoutId) {
-                this.poseIds = workout.poseIds
+        console.log(this.workoutID)
+        workouts.forEach((workout, index) => {
+            if(index == this.workoutID) {
+                this.workoutName = workout.name;
+                this.workoutDesc = workout.description;
+                this.poseIds = clone(workout.poseIds);
+                return
             }
         })
         this.getPosesList();
-        console.log(this.state)
     }
 
     getPosesList() {
@@ -41,14 +50,27 @@ class lobby extends React.Component {
                 newState.push(referencePose);
             }
         });
-        this.setState(newState);
+        this.setState({poses: newState});
     }
 
     render() {
+
+        const poses = this.state.poses.map((pose, index) =>
+            <li>{pose.name}</li>
+        )
+
         return(
-            <div>
-                <h1>test</h1>
-            </div>
+            <Container style={{marginTop: "80px", marginBottom: "100px"}}>
+                <Fade>
+                    <Button onClick={this.props.goBack} style={{marginBottom: "20px"}}>&larr; Back</Button>
+                    <h1>{this.workoutName}</h1>
+                    <p><b>{this.workoutDesc}</b></p>
+                    <p>This workout contains the following poses : </p>
+                    <ul>
+                        {poses}
+                    </ul>
+                </Fade>
+            </Container>
         )
     }
 
