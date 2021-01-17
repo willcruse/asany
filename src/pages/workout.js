@@ -163,7 +163,7 @@ class Workout extends React.Component {
                 outputStride={this.props.outputStride}
                 quantBytes={this.props.quantBytes}
                 showVideoCanvas={this.props.showVideoCanvas}></CameraStream>
-                <div className={this.showScore ? "score-message" : "score-message score-hidden"}>test{this.scoreMessage}</div>
+                <div className={this.showScore ? "score-message" : "score-message score-hidden"}>{this.scoreMessage}</div>
             </div>)
     }
 
