@@ -81,7 +81,7 @@ function VideoStreamer(props){
       },
     };
 
-    const subscriberEventHandlers = {
+  const subscriberEventHandlers = {
       videoEnabled: () => {
         console.log('Subscriber video enabled');
       },
@@ -90,29 +90,29 @@ function VideoStreamer(props){
       },
     };
 
-    const onSessionError = error => {
-      setError(error);
-    };
+  const onSessionError = error => {
+    setError(error);
+  };
 
-    const onPublish = () => {
-      console.log('Publish Success');
-    };
+  const onPublish = () => {
+    console.log('Publish Success');
+  };
 
-    const onPublishError = error => {
-      setError(error);
-    };
+  const onPublishError = error => {
+    setError(error);
+  };
 
-    const onSubscribe = () => {
-      console.log('Subscribe Success');
-    };
+  const onSubscribe = () => {
+    console.log('Subscribe Success');
+  };
 
-    const onSubscribeError = error => {
-      setError(error);
-    };
+  const onSubscribeError = error => {
+    setError(error);
+  };
 
-    const toggleVideo = () => {
-      setPublishVideo(!publishVideo)
-    }
+  const toggleVideo = () => {
+    setPublishVideo(!publishVideo)
+  }
 
   return (
     <Container>
