@@ -50,7 +50,7 @@ function VideoStreamer(props){
           setToken(json.token);
         }
         if (json?.workoutID != null) {
-          setWorkoutID(json.workoutID);
+          props.setWorkoutID(json.workoutID);
         }
       }).catch((err) => {
         console.warn(error)
