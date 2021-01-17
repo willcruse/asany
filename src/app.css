@@ -98,3 +98,18 @@
     border: 5px solid salmon;
     border-radius: 4px;
 }
+
+.score-message {
+    font-size: 50px;
+    color: black;
+    font-weight: bold;
+    position: fixed;
+    transform: rotate(-30deg);
+    bottom: 120px;
+    right: 170px;
+    opacity: 1;
+    transition: all 1s;
+}
+.score-hidden {
+    opacity: 0;
+}

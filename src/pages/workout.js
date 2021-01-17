@@ -28,6 +28,12 @@ class Workout extends React.Component {
     latestPoseData = {}
     start = false;
 
+    showScore = false;
+    scoreMessage = ""
+    badScore = [3000, Infinity]
+    goodScore = [2000, 3000]
+    greatScore = [0, 2000]
+
     // props :
     // - workoutID
     constructor(props) {
@@ -39,6 +45,7 @@ class Workout extends React.Component {
         this.getNextPoseName = this.getNextPoseName.bind(this)
         this.getNextPoseImage = this.getNextPoseImage.bind(this)
         this.updatePoseData = this.updatePoseData.bind(this)
+        this.showScoreMessage = this.showScoreMessage.bind(this)
     }
 
     componentDidMount() {
@@ -59,8 +66,8 @@ class Workout extends React.Component {
         // check if time has run out
         if(newCurrentPose.duration <= 0) {
             if (newCurrentPose.keypoints.length != 0) {
-                console.log("score")
-                console.log(getPoseScore(newCurrentPose.keypoints, this.latestPoseData.keypoints));
+                console.log("calling method")
+                this.showScoreMessage(getPoseScore(newCurrentPose.keypoints, this.latestPoseData.keypoints));
             }
             newCurrentPose = null
         }
@@ -108,6 +115,24 @@ class Workout extends React.Component {
         console.log(this.latestPoseData);
     }
 
+    showScoreMessage(score) {
+        console.log("in method")
+        var message = ""
+        if(score > this.badScore[0]) {
+            message = "Awefull";
+        }
+        if(score > this.goodScore[0] && score <= this.goodScore[1]){
+            message = "Okay"
+        }
+        if(score >= this.greatScore[0] && score <= this.greatScore[1]){
+            message = "Amazing!"
+        }
+        this.scoreMessage = message
+        this.showScore = true
+        this.render()
+        setTimeout(() => {console.log("hidding");this.showScore=false; this.render()}, 2000);
+    }
+
     render() {
         var content = <div className="loader"></div>
 
@@ -138,6 +163,7 @@ class Workout extends React.Component {
                 outputStride={this.props.outputStride}
                 quantBytes={this.props.quantBytes}
                 showVideoCanvas={this.props.showVideoCanvas}></CameraStream>
+                <div className={this.showScore ? "score-message" : "score-message score-hidden"}>test{this.scoreMessage}</div>
             </div>)
     }
 
