@@ -97,7 +97,9 @@ function App() {
           modelName={model}
           outputStride={outputStride}
           quantBytes={quantBytes}
-          showVideoCanvas={showVideoCanvas}></Workout>
+          showVideoCanvas={showVideoCanvas}
+          goBack={goBack}>
+          </Workout>
           </Row> : <></>
       }
       {

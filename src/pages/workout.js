@@ -56,6 +56,11 @@ class Workout extends React.Component {
     workoutLoop() {
         // if currentPose is null, take top of stack
         if(this.state.currentPose == null) {
+            if(this.state.stack.length == 0) {
+                clearInterval(this.loopInterval)
+                this.props.goBack()
+                return
+            }
             this.setState({currentPose: this.state.stack.pop()})
             this.currentTotalTime = this.state.currentPose.duration;
         }
