@@ -28,7 +28,7 @@ function App() {
   const [previousPage, changePreviousPage] = useState(PAGES.workoutSelector);
   const [currentPage, setCurrentPage] = useState(PAGES.workoutSelector);
 
-  const [model, changeModel] = useState('ResNet50');
+  const [model, changeModel] = useState('MobileNetV1');
   const [outputStride, changeOutputStride] = useState(16);
   const [quantBytes, changeQuantBytes] = useState(4);
   const [showVideoCanvas, changeShowVideoCanvas] = useState(false);
@@ -53,11 +53,11 @@ function App() {
       <Header currentPage={currentPage}></Header>
       {/* HACK: Temp Page changer for debug */}
       {/* <Row>
-        <Col> 
+        <Col>
           <Form>
             <FormGroup>
               <label htmlFor="#app-page">DEGUB BAR</label>
-              
+
               <FormSelect value={currentPage} onChange={(event) => {navigateAway(event.target.value)}}>
                 <option value={PAGES.workoutSelector}>{PAGES.workoutSelector}</option>
                 <option value={PAGES.settings}>{PAGES.settings}</option>
@@ -93,7 +93,11 @@ function App() {
       }
       {
         currentPage == PAGES.workout ? <Row>
-          <Workout workoutID={workoutID}></Workout>
+          <Workout workoutID={workoutID}
+          modelName={model}
+          outputStride={outputStride}
+          quantBytes={quantBytes}
+          showVideoCanvas={showVideoCanvas}></Workout>
           </Row> : <></>
       }
       {

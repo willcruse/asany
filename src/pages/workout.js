@@ -17,13 +17,16 @@ import workouts from "../workouts"
 import referencePoses from "../referencePoses"
 import { math } from '@tensorflow/tfjs-core';
 import CameraStream from '../CameraStream';
+import poseDifference, { getPoseScore } from '../utils/poseDifference.js'
 
 class Workout extends React.Component {
 
-    workout = {};
-    interval;
-    intervalTime = 5;
-    currentTotalTime = 0;
+    workout = {}
+    loopInterval
+    intervalTime = 100
+    currentTotalTime = 0
+    latestPoseData = {}
+    start = false;
 
     // props :
     // - workoutID
@@ -35,13 +38,12 @@ class Workout extends React.Component {
         this.workoutLoop = this.workoutLoop.bind(this)
         this.getNextPoseName = this.getNextPoseName.bind(this)
         this.getNextPoseImage = this.getNextPoseImage.bind(this)
+        this.updatePoseData = this.updatePoseData.bind(this)
     }
 
     componentDidMount() {
         // load the correct workout
         this.workout = workouts.filter((workout, index) => index==this.props.workoutID)[0]
-        // populate the stack with poses and rests
-        setTimeout(() => this.initStack(), 1000);
     }
 
     workoutLoop() {
@@ -56,6 +58,10 @@ class Workout extends React.Component {
 
         // check if time has run out
         if(newCurrentPose.duration <= 0) {
+            if (newCurrentPose.keypoints.length != 0) {
+                console.log("score")
+                console.log(getPoseScore(newCurrentPose.keypoints, this.latestPoseData.keypoints));
+            }
             newCurrentPose = null
         }
 
@@ -80,7 +86,7 @@ class Workout extends React.Component {
         this.setState({isLoading: false, stack: newStack, currentPose: null})
 
         // start workout
-        this.interval = setInterval(this.workoutLoop, this.intervalTime);
+        this.loopInterval = setInterval(this.workoutLoop, this.intervalTime);
     }
 
     getNextPoseName() {
@@ -91,31 +97,48 @@ class Workout extends React.Component {
         return this.state.stack[this.state.stack.length-1].imageURL;
     }
 
+    updatePoseData(poseData) {
+        // start when this is first called as it means the model has loaded
+        if(!this.started) {
+            // populate the stack with poses and rests
+            setTimeout(() => this.initStack(), 500);
+            this.started = true
+        }
+        this.latestPoseData = poseData;
+        console.log(this.latestPoseData);
+    }
+
     render() {
-        var content = <div></div>
+        var content = <div className="loader"></div>
 
         if (!this.state.loading && this.state.currentPose != null){
-            content = 
+            content =
             <div>
             <div className="custom-progress-container">
                 <div className="custom-progress-bar" style={{width: Math.round(this.state.currentPose.duration/this.currentTotalTime*100)+"%"}}></div>
             </div>
             <Container style={{marginTop: "80px"}}>
             <Fade>
-                <div className="workoutScreen"> 
+                <div className="workoutScreen">
                     <div>
-                        <h1>{this.state.currentPose.name}</h1>
+                        <h1>Do {this.state.currentPose.name}</h1>
                         {this.state.currentPose.id == -1 ? <h4>Next is {this.getNextPoseName()}</h4> : <></>}
                         <img src={this.state.currentPose.id==-1 ? this.getNextPoseImage() : this.state.currentPose.imageURL} style={{maxWidth: "400px"}}></img>
                     </div>
                 </div>
             </Fade>
             </Container>
-            <CameraStream></CameraStream>
             </div>
         }
 
-        return (<div style={{width: "100%"}}>{content}</div>)
+        return (<div style={{width: "100%"}}>
+                {content}
+                <CameraStream updatePoseData={this.updatePoseData}
+                modelName={this.props.modelName}
+                outputStride={this.props.outputStride}
+                quantBytes={this.props.quantBytes}
+                showVideoCanvas={this.props.showVideoCanvas}></CameraStream>
+            </div>)
     }
 
 }

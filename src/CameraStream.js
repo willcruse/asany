@@ -12,6 +12,7 @@ import {
 
 import * as posenet from '@tensorflow-models/posenet';
 import '@tensorflow/tfjs-backend-webgl';
+import '@tensorflow/tfjs-backend-cpu'
 import {getPoseScore} from './utils/poseDifference.js';
 import referencePoses from './referencePoses.js';
 
@@ -24,8 +25,6 @@ function CameraStream(props) {
 
   const [model, updateModel] = useState(null);
   const [ready, setReady] = useState(false);
-
-  let interval = null;
 
   useEffect(() => { // Called when videoComponent is changed
     if (videoComponent.current != null) {
@@ -76,6 +75,7 @@ function CameraStream(props) {
 
         });
         updateModel(posenet_model);
+        console.log(posenet_model);
         console.log(`Current model is ${modelName}`);
       } catch (error) {
         console.log(error)
@@ -90,91 +90,40 @@ function CameraStream(props) {
   }, [modelName, props.outputStride, props.quantBytes]);
 
   useEffect(() => {
-    return () => {
-      if (interval != null) {
-        clearInterval(interval);
-      }
-    }
-  }, []);
-
-  const getPose = () => {
     const getPoseFrame = async () => {
       if (videoComponent.current != null &&
           model != null &&
           ready) {
-        const {
-          minPoseConfidence,
-          minPartConfidence,
-          showVideoCanvas,
-          showPoints,
-          calcDifference,
-          showSkeleton,
-          skeletonColor,
-          skeletonLineWidth
-        } = props;
         const poses = [];
         try {
-          const pose = await model.estimateSinglePose(videoComponent.current, {
+          model.estimateSinglePose(videoComponent.current, {
             video: true,
             flipHorizontal: props.flipHorizontal
+          }).then((pose) => {
+            poses.push(pose);
+            props.updatePoseData(pose);
+          }).catch((err) => {
+            throw err
           });
-          poses.push(pose);
-
-      //   if(canvasComponent.current != null){
-      //     const canvasContext = canvasComponent.current.getContext('2d');
-      //     canvasContext.clearRect(0, 0, videoWidth, videoHeight);
-      //     canvasContext.canvas.width = videoWidth;
-      //     canvasContext.canvas.height = videoHeight;
-      //     if (showVideoCanvas) {
-      //       canvasContext.save();
-      //       canvasContext.scale(-1, 1);
-      //       canvasContext.translate(-videoWidth, 0);
-      //       canvasContext.drawImage(videoComponent.current, 0, 0, videoComponent.current.width, videoComponent.current.height);
-      //       canvasContext.restore();
-      //     }
-
-      //     poses.forEach(({score, keypoints}) => {
-      //       if (score >= minPoseConfidence) {
-      //         if (showVideoCanvas && showPoints) {
-      //           drawKeyPoints(
-      //             keypoints,
-      //             minPartConfidence,
-      //             skeletonColor,
-      //             canvasContext
-      //           );
-      //         }
-      //         if (showVideoCanvas && showSkeleton) {
-      //           drawSkeleton(
-      //             keypoints,
-      //             minPartConfidence,
-      //             skeletonColor,
-      //             skeletonLineWidth,
-      //             canvasContext
-      //           );
-      //         }
-      //         if (calcDifference) {
-      //           // const score = getPoseScore(tpose, keypoints);
-      //         }
-      //       }
-      //   })
-      // }
-      } catch (error) {
-        // HACK: This isn't ideal, we only want to skip the error if the video element hasn't loaded
-        console.log(error)
-        return
+        } catch (error) {
+          // HACK: This isn't ideal, we only want to skip the error if the video element hasn't loaded
+          console.log(error)
+          return
+        }
       }
     }
-    }
-    interval = setInterval(getPoseFrame, 1000/props.fps);
-  }
+    const interval = setInterval(getPoseFrame, props.interval);
+    return () => {clearInterval(interval)}
+  }, [model, ready])
 
-  getPose();
+
   return (
     <Container fluid>
       <video
         playsInline
         ref={videoComponent}
-        style={props.showVideoCanvas ? {display: 'none', width: '100%'} : {transform: 'scaleX(-1)', width: '400px'}}
+        className="user-video" 
+        style={props.showVideoCanvas ? {display: 'none', width: '100%'} : {transform: 'scaleX(-1)'}}
       />
       {props.showVideoCanvas ? <canvas ref={canvasComponent} style={{width: videoWidth, height: videoHeight}}/> : <></>}
     </Container>
@@ -185,7 +134,7 @@ CameraStream.defaultProps = {
     videoWidth: 1280,
     videoHeight: 780,
     flipHorizontal: true,
-    modelName: 'ResNet50',
+    // modelName: 'ResNet50',
     algorithm: 'single-pose',
     showVideoCanvas: false,
     showSkeleton: true,
@@ -201,7 +150,7 @@ CameraStream.defaultProps = {
     skeletonColor: '#ffadea',
     skeletonLineWidth: 6,
     loadingText: 'Loading...please be patient...',
-    fps: 1
+    interval: 3000
 };
 
 function toTuple({x, y}) {
