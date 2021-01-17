@@ -43,7 +43,7 @@ def get_token():
         if workout_session is None:
             return jsonify({'error': 'invalid sessionID'})
 
-        return jsonify({'token': workout_session.session.generate_token()})
+        return jsonify({'token': workout_session.session.generate_token(), 'workout': workout_session.workout})
     except Exception:
         return jsonify({'error': 'unknown-error'})
 
