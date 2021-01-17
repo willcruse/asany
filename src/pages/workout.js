@@ -17,8 +17,8 @@ import workouts from "../workouts"
 import referencePoses from "../referencePoses"
 import { math } from '@tensorflow/tfjs-core';
 import CameraStream from '../CameraStream';
-import VideoStreamer from '../VideoStreamer';
 import poseDifference, { getPoseScore } from '../utils/poseDifference.js'
+import VideoStreamer from '../VideoStreamer';
 
 class Workout extends React.Component {
 
@@ -57,6 +57,11 @@ class Workout extends React.Component {
     workoutLoop() {
         // if currentPose is null, take top of stack
         if(this.state.currentPose == null) {
+            if(this.state.stack.length == 0) {
+                clearInterval(this.loopInterval)
+                this.props.goBack()
+                return
+            }
             this.setState({currentPose: this.state.stack.pop()})
             this.currentTotalTime = this.state.currentPose.duration;
         }
@@ -113,14 +118,14 @@ class Workout extends React.Component {
             this.started = true
         }
         this.latestPoseData = poseData;
-        // console.log(this.latestPoseData);
+        console.log(this.latestPoseData);
     }
 
     showScoreMessage(score) {
         console.log("in method")
         var message = ""
         if(score > this.badScore[0]) {
-            message = "Awefull";
+            message = "Not good";
         }
         if(score > this.goodScore[0] && score <= this.goodScore[1]){
             message = "Okay"
