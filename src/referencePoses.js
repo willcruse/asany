@@ -2,6 +2,8 @@
 const poses = [ 
     {
         "id": 0,
+        "duration": 5000,
+        "imageURL": "",
         "name": "T-Pose",
         "keypoints": [
             {"score": 0.9958187937736511, "part": "nose", "position": {"x": 637.4001094357976, "y": 194.55579705739302}},
@@ -25,6 +27,8 @@ const poses = [
     },
     {
         "id": 1,
+        "duration": 5000,
+        "imageURL": "https://www.verywellfit.com/thmb/BZKix4uVNE7ZX-otHOOWwFHH5iA=/3000x2000/filters:no_upscale():max_bytes(150000):strip_icc()/53-3567045-GatePose-001-152a4218b9a44952a31ef0a4a93f05f6.jpg",
         "name": "Gate Pose",
         "keypoints": [
             {
@@ -167,6 +171,8 @@ const poses = [
     },
     {
         "id": 2,
+        "duration": 5000,
+        "imageURL": "https://imageproxy.themaven.net//https%3A%2F%2Fwww.yogajournal.com%2F.image%2FMTQ3MTU3MTIzNjI3NzU0OTU4%2F3hp_288_07_bjk2.jpg",
         "name": "High Lunge",
         "keypoints": [
             {
@@ -309,6 +315,8 @@ const poses = [
     },
     {
         "id": 3,
+        "duration": 5000,
+        "imageURL": "https://www.ekhartyoga.com/media/images/articles/content/Cobra-pose-Bhujangasana-Esther-Ekhart.jpg",
         "name": "Cobra Pose",
         "keypoints": [
             {
@@ -451,6 +459,8 @@ const poses = [
     },
     {
         "id": 4,
+        "duration": 5000,
+        "imageURL": "https://evenmoreaboutyoga.com/wp-content/uploads/2015/12/cat-pose-620x350.jpg",
         "name": "Cat Pose",
         "keypoints": [
             {
@@ -593,6 +603,8 @@ const poses = [
     },
     {
         "id": 5,
+        "duration": 5000,
+        "imageURL": "https://www.gaia.com/wp-content/uploads/ChairPose-NicoLuce.jpg",
         "name": "Chair Pose",
         "keypoints": [
             {
@@ -735,6 +747,8 @@ const poses = [
     },
     {
         "id": 6,
+        "duration": 5000,
+        "imageURL": "https://www.verywellfit.com/thmb/Sgy_FHtDtEl8wctggFasfjH3rhg=/3000x2000/filters:fill(FFDB5D,1)/About-50-4111744-Tree-Pose02-641-5c4b762cc9e77c00016f33b6.jpg",
         "name": "Tree Pose",
         "keypoints": [
             {
@@ -877,6 +891,8 @@ const poses = [
     },
     {
         "id": 7,
+        "duration": 5000,
+        "imageURL": "https://www.ekhartyoga.com/media/images/articles/content/Downward-Facing-Dog-Pose-Adho-Mukha-Svanasana.jpg",
         "name": "Downward Facing Dog",
         "keypoints": [
             {
@@ -1019,6 +1035,8 @@ const poses = [
     },
     {
         "id": 8,
+        "duration": 5000,
+        "imageURL": "https://www.ekhartyoga.com/media/images/articles/content/Staff-Pose-Dandasana-Ekhart-Yoga.jpg",
         "name": "Staff Pose",
         "keypoints": [
             {

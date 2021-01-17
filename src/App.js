@@ -12,7 +12,6 @@ import Settings from "./pages/settings.js";
 import CameraStream from "./CameraStream.js";
 import Lobby from "./pages/lobby.js"
 import WorkoutSelector from "./pages/workoutSelector.js"
-import VideoStreamer from "./VideoStreamer.js"
 import Workout from "./pages/workout.js"
 import "./app.css";
 
@@ -51,7 +50,7 @@ function App() {
   }
   return (
     <div className="page">
-      <Header></Header>
+      <Header currentPage={currentPage}></Header>
       {/* HACK: Temp Page changer for debug */}
       {/* <Row>
         <Col> 
@@ -88,9 +87,14 @@ function App() {
       }
       {
         currentPage == PAGES.lobby ? <Row>
-          <Lobby workoutID={workoutID} goBack={goBack}></Lobby>
+          <Lobby workoutID={workoutID} goBack={goBack} navigateAway={() => navigateAway(PAGES.workout)}></Lobby>
           </Row>
           : <></>
+      }
+      {
+        currentPage == PAGES.workout ? <Row>
+          <Workout workoutID={workoutID}></Workout>
+          </Row> : <></>
       }
       {
         currentPage == PAGES.cameraStream ? <Row>
@@ -101,9 +105,6 @@ function App() {
           showVideoCanvas={showVideoCanvas}
         />
         </Row> : <></>
-      }
-      {
-        currentPage == PAGES.workout ? <Row><Workout workoutID={workoutID}/></Row> : <></>
       }
     </div>
   );

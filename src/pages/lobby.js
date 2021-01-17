@@ -19,8 +19,6 @@ const clone = rfdc();
 
 class lobby extends React.Component {
 
-
-
     // props :
     // - workoutID
     // - goback
@@ -35,7 +33,6 @@ class lobby extends React.Component {
     }
     
     componentDidMount() {
-        console.log(this.workoutID)
         workouts.forEach((workout, index) => {
             if(index == this.workoutID) {
                 this.workoutName = workout.name;
@@ -54,6 +51,7 @@ class lobby extends React.Component {
                 newState.push(referencePose);
             }
         });
+        console.log(newState);
         this.setState({poses: newState});
     }
 
@@ -73,6 +71,7 @@ class lobby extends React.Component {
                     <ul>
                         {poses}
                     </ul>
+                    <Button onClick={this.props.navigateAway} style={{marginTop: "20px"}}>Start &rarr;</Button>
                 </Fade>
             </Container>
         )

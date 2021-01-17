@@ -12,6 +12,10 @@
     height: 300px;
     margin-bottom: 80px;
 }
+.small-header {
+    height: 100px;
+    margin-bottom: 20px;
+}
 
 .header h1 {
     position: absolute;
@@ -23,6 +27,11 @@
     animation-name: fadeIn;
     animation-duration: 1s;
     animation-iteration-count: 1;
+    transition: all 1s;
+}
+.header .small-name {
+    top: 25px;
+    font-size: 70px;
 }
 
 .background {
@@ -36,4 +45,15 @@
     animation-name: fadeIn;
     animation-duration: 2s;
     animation-iteration-count: 1;
+    transition: all 1s;
+}
+
+.reduced-background {
+    height: 100px;
+    background-position: center;
+    clip-path: polygon(0 0, 100% 0%, 100% 100%, 0 100%);;
+}
+
+.workoutScreen {
+    text-align: center;
 }
