@@ -2,7 +2,8 @@ import React, {useState, useEffect} from "react";
 import {
   Row,
   Col,
-  Container
+  Container,
+  Button
 } from "shards-react";
 import { OTSession, OTPublisher, OTStreams, OTSubscriber } from 'opentok-react';
 
@@ -93,9 +94,9 @@ function VideoStreamer(props){
             onError={onSessionError}
             eventHandlers={sessionEventHandlers}
           >
-            <button id="videoButton" onClick={toggleVideo}>
+            <Button id="videoButton" onClick={toggleVideo}>
                 {publishVideo ? 'Disable' : 'Enable'} Video
-            </button>
+            </Button>
             <OTPublisher
               properties={{ publishVideo, width: 50, height: 50, }}
               onPublish={onPublish}
