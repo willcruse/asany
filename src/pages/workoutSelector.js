@@ -1,16 +1,22 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Fade,
     Card,
+    CardHeader,
     CardTitle,
     CardImg,
     CardBody,
+    CardFooter,
     Button,
     Container,
     Row,
-    Col
+    Col,
+    Form,
+    FormGroup,
+    FormInput,
   } from "shards-react";
 import workouts from "../workouts"
+import {SERVER_ADDRESS} from "../config.js"
 
 class workoutSelector extends React.Component {
 
@@ -61,6 +67,14 @@ class workoutSelector extends React.Component {
             <Container style={{paddingBottom: "100px"}}>
                 <Row>
                     {workoutCards}
+               </Row>
+               <Row>
+                    <SocialSetup
+                      sessionID={this.props.sessionID}
+                      setSessionID={this.props.setSessionID}
+                      setToken={this.props.setToken}
+                      setWorkoutID={this.props.setWorkoutID}
+                    />
                 </Row>
                 <Row>
                 <Col><Button style={{marginLeft: "20px"}} onClick={this.settings}>Settings</Button></Col>
@@ -69,6 +83,95 @@ class workoutSelector extends React.Component {
         )
     }
 
+  }
+
+  function SocialSetup({sessionID, setSessionID, setToken, setWorkoutID}) {
+
+    const [tempSessionID, setTempSessionID] = useState("");
+
+    const startNewSession = () => {
+      fetch(SERVER_ADDRESS + '/new-session', {
+        mode: 'cors',
+      }).then((resp) => {
+          return resp.json()
+        }).then((json) => {
+          if (json?.error != undefined) {
+            throw Error(json.error)
+          } else if (json?.sessionID != null) {
+            setSessionID(json.sessionID)
+            getToken(json.sessionID);
+          }
+        }).catch((err) => {
+          console.warn(err)
+        });
+    }
+
+    const getToken = (id) => {
+      fetch(SERVER_ADDRESS + '/get-token', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        mode: 'cors',
+        body: JSON.stringify({'sessionID': id})
+      }).then((resp) => {
+        return resp.json()
+      }).then((json) => {
+        if (json?.error != undefined) {
+          throw Error(json.error)
+        } else if (json?.token != null) {
+          console.log(json.token)
+          setToken(json.token);
+        }
+        if (json?.workoutID != null) {
+          this.props.setWorkoutID(json.workoutID);
+        }
+      }).catch((err) => {
+        console.warn(err)
+      });
+    }
+
+    if (sessionID == null) {
+      return (
+        <Container style={{paddingBottom: "100px"}}>
+          <Card style={{ maxWidth: "500px", marginRight: "20px", marginLeft: "20px", marginBottom: "40px"}}>
+            <CardHeader>Invite People</CardHeader>
+            <Row style={{margin: "10px"}}>
+              <Col>
+                <Form>
+                  <FormGroup>
+                    <label htmlFor="#lobby-join">Session ID</label>
+                    <FormInput
+                        id="#lobby-join"
+                        type="text"
+                        onChange={(event) => {setTempSessionID(event.target.value)}}
+                        value={tempSessionID}
+                    />
+                  </FormGroup>
+                </Form>
+              </Col>
+            </Row>
+            <Row style={{margin: "10px"}}>
+              <Col>
+                <Button onClick={() => {setSessionID(tempSessionID); getToken()}}>Join</Button>
+              </Col>
+              <Col>
+                <Button onClick={startNewSession}>Start Session</Button>
+              </Col>
+            </Row>
+          </Card>
+        </Container>
+      )
+    }
+
+    return (
+      <Container>
+        <Card>
+          <CardHeader>Invite People</CardHeader>
+          <CardBody>{sessionID}</CardBody>
+        </Card>
+      </Container>
+    )
   }
 
   export default workoutSelector;

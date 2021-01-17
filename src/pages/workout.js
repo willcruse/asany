@@ -17,6 +17,7 @@ import workouts from "../workouts"
 import referencePoses from "../referencePoses"
 import { math } from '@tensorflow/tfjs-core';
 import CameraStream from '../CameraStream';
+import VideoStreamer from '../VideoStreamer';
 import poseDifference, { getPoseScore } from '../utils/poseDifference.js'
 
 class Workout extends React.Component {
@@ -112,7 +113,7 @@ class Workout extends React.Component {
             this.started = true
         }
         this.latestPoseData = poseData;
-        console.log(this.latestPoseData);
+        // console.log(this.latestPoseData);
     }
 
     showScoreMessage(score) {
@@ -156,15 +157,22 @@ class Workout extends React.Component {
             </div>
         }
 
-        return (<div style={{width: "100%"}}>
-                {content}
-                <CameraStream updatePoseData={this.updatePoseData}
-                modelName={this.props.modelName}
-                outputStride={this.props.outputStride}
-                quantBytes={this.props.quantBytes}
-                showVideoCanvas={this.props.showVideoCanvas}></CameraStream>
-                <div className={this.showScore ? "score-message" : "score-message score-hidden"}>test{this.scoreMessage}</div>
-            </div>)
+        return (
+          <div style={{width: "100%"}}>
+            {content}
+            <CameraStream updatePoseData={this.updatePoseData}
+            modelName={this.props.modelName}
+            outputStride={this.props.outputStride}
+            quantBytes={this.props.quantBytes}
+            showVideoCanvas={this.props.showVideoCanvas}></CameraStream>
+            <div className={this.showScore ? "score-message" : "score-message score-hidden"}>test{this.scoreMessage}</div>
+            <VideoStreamer
+              sessionID={this.props.sessionID}
+              token={this.props.token}
+
+            />
+          </div>
+      )
     }
 
 }

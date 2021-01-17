@@ -10,14 +10,17 @@ import {
     Button,
     Container,
     Row,
-    Col
+    Col,
+    Form,
+    FormGroup,
+    FormInput,
   } from "shards-react";
 import workouts from "../workouts"
 import referencePoses from "../referencePoses"
 import rfdc from 'rfdc';
 const clone = rfdc();
 
-class lobby extends React.Component {
+class Lobby extends React.Component {
 
     // props :
     // - workoutID
@@ -31,7 +34,7 @@ class lobby extends React.Component {
         this.poseIds = []
         this.state = {poses: []}
     }
-    
+
     componentDidMount() {
         workouts.forEach((workout, index) => {
             if(index == this.workoutID) {
@@ -63,20 +66,26 @@ class lobby extends React.Component {
 
         return(
             <Container style={{marginTop: "80px", marginBottom: "100px"}}>
-                <Fade>
-                    <Button onClick={this.props.goBack} style={{marginBottom: "20px"}}>&larr; Back</Button>
-                    <h1>{this.workoutName}</h1>
-                    <p><b>{this.workoutDesc}</b></p>
-                    <p>This workout contains the following poses : </p>
-                    <ul>
-                        {poses}
-                    </ul>
-                    <Button onClick={this.props.navigateAway} style={{marginTop: "20px"}}>Start &rarr;</Button>
-                </Fade>
+              <Row>
+                  <Fade>
+                    <Col>
+                      <Button onClick={this.props.goBack} style={{marginBottom: "20px"}}>&larr; Back</Button>
+                      <h1>{this.workoutName}</h1>
+                      <p><b>{this.workoutDesc}</b></p>
+                      <p>This workout contains the following poses : </p>
+                      <ul>
+                          {poses}
+                      </ul>
+                      <Button onClick={this.props.navigateAway} style={{marginTop: "20px"}}>Start &rarr;</Button>
+                    </Col>
+                  </Fade>
+                </Row>
             </Container>
         )
     }
 
 }
 
-export default lobby;
+
+
+export default Lobby;

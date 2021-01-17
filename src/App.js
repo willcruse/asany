@@ -35,6 +35,9 @@ function App() {
 
   const [workoutID, changeWorkoutID] = useState(0);
 
+  const [sessionID, setSessionID] = useState(null);
+  const [token, setToken] = useState(null);
+
   const navigateAway = (nextPage) => {
     changePreviousPage(currentPage);
     setCurrentPage(nextPage);
@@ -69,7 +72,17 @@ function App() {
         </Col>
         </Row> */}
         {
-          currentPage == PAGES.workoutSelector ? <Row><WorkoutSelector settings={() => navigateAway(PAGES.settings)} goToLobby={goToLobby}/></Row> : <></>
+          currentPage == PAGES.workoutSelector ?
+          <Row>
+            <WorkoutSelector
+              settings={() => navigateAway(PAGES.settings)}
+              goToLobby={goToLobby}
+              sessionID={sessionID}
+              setSessionID={setSessionID}
+              setToken={setToken}
+              setWorkoutID={changeWorkoutID}
+            />
+          </Row> : <></>
         }
       {currentPage == PAGES.settings ? <Row>
         <Settings
@@ -87,7 +100,13 @@ function App() {
       }
       {
         currentPage == PAGES.lobby ? <Row>
-          <Lobby workoutID={workoutID} goBack={goBack} navigateAway={() => navigateAway(PAGES.workout)}></Lobby>
+          <Lobby
+            workoutID={workoutID}
+            goBack={goBack}
+            navigateAway={() => navigateAway(PAGES.workout)}
+            sessionID={sessionID}
+            setSessionID={setSessionID}
+          />
           </Row>
           : <></>
       }
@@ -97,7 +116,11 @@ function App() {
           modelName={model}
           outputStride={outputStride}
           quantBytes={quantBytes}
-          showVideoCanvas={showVideoCanvas}></Workout>
+          showVideoCanvas={showVideoCanvas}
+          workoutID={workoutID}
+          sessionID={sessionID}
+          token={token}
+          />
           </Row> : <></>
       }
       {
