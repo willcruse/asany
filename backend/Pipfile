@@ -8,6 +8,7 @@ opentok = "*"
 flask = "*"
 flask-cors = "*"
 python-dotenv = "*"
+requests = "*"
 
 [dev-packages]
 
