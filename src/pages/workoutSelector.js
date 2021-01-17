@@ -153,7 +153,7 @@ class workoutSelector extends React.Component {
             </Row>
             <Row style={{margin: "10px"}}>
               <Col>
-                <Button onClick={() => {setSessionID(tempSessionID); getToken()}}>Join</Button>
+                <Button onClick={() => {setSessionID(tempSessionID); getToken(tempSessionID)}}>Join</Button>
               </Col>
               <Col>
                 <Button onClick={startNewSession}>Start Session</Button>

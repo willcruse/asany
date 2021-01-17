@@ -169,7 +169,6 @@ class Workout extends React.Component {
             <VideoStreamer
               sessionID={this.props.sessionID}
               token={this.props.token}
-
             />
           </div>
       )
