@@ -13,6 +13,7 @@ function VideoStreamer(props){
   const [error, setError] = useState(null);
   const [connection, setConnection] = useState('Connecting');
   const [publishVideo, setPublishVideo] = useState(true);
+
   const [sessionID, setSessionID] = useState(props?.sessionID);
   const [token, setToken] = useState(props?.token);
 
@@ -47,6 +48,9 @@ function VideoStreamer(props){
           throw Error(json.error)
         } else if (json?.token != null) {
           setToken(json.token);
+        }
+        if (json?.workoutID != null) {
+          setWorkoutID(json.workoutID);
         }
       }).catch((err) => {
         console.warn(error)
@@ -156,7 +160,8 @@ function VideoStreamer(props){
 VideoStreamer.defaultProps = {
   apiKey: '47084744',
   sessionID: false,
-  token: false
+  token: false,
+  setWorkoutID: () => {console.warn("Not implemented");}
 }
 
 export default VideoStreamer;
