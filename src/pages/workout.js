@@ -124,7 +124,7 @@ class Workout extends React.Component {
         console.log("in method")
         var message = ""
         if(score > this.badScore[0]) {
-            message = "Awefull";
+            message = "Not good";
         }
         if(score > this.goodScore[0] && score <= this.goodScore[1]){
             message = "Okay"
