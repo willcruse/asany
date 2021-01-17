@@ -12,6 +12,7 @@ import Settings from "./pages/settings.js";
 import CameraStream from "./CameraStream.js";
 import Lobby from "./pages/lobby.js"
 import WorkoutSelector from "./pages/workoutSelector.js"
+import VideoStreamer from "./VideoStreamer.js"
 import "./app.css";
 
 const PAGES = {
@@ -46,6 +47,8 @@ function App() {
     changeWorkoutID(workoutID);
     navigateAway(PAGES.lobby);
   }
+
+  return (<VideoStreamer />)
   return (
     <div className="page">
       <Header></Header>
@@ -55,7 +58,7 @@ function App() {
           <Form>
             <FormGroup>
               <label htmlFor="#app-page">DEGUB BAR</label>
-              
+
               <FormSelect value={currentPage} onChange={(event) => {navigateAway(event.target.value)}}>
                 <option value={PAGES.workoutSelector}>{PAGES.workoutSelector}</option>
                 <option value={PAGES.settings}>{PAGES.settings}</option>
