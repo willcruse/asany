@@ -30,9 +30,9 @@ class Workout extends React.Component {
 
     showScore = false;
     scoreMessage = ""
-    badScore = [3000, Infinity]
-    goodScore = [2000, 3000]
-    greatScore = [0, 2000]
+    badScore = [7000, Infinity]
+    goodScore = [4000, 7000]
+    greatScore = [0, 4000]
 
     // props :
     // - workoutID
